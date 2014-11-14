@@ -2,9 +2,9 @@ React Infinite List
 ==============
 
 A component that displays large list of data efficiently. Reuses DOM elements during scrolling.
-Inspired by [https://github.com/Morhaus/react-list-view] project, but it uses different rendering approach
-than the mentioned project or Ember ListView. Instead of transposing the item rows, it just
-relies on React efficient rendering and re-renders everything from scratch.
+It uses different rendering approach than [https://github.com/Morhaus/react-list-view] or Ember ListView.
+Instead of transposing the item rows, it just re-renders the component whenever the top or bottom
+list item is scrolled out of the visible area.
 
 Installation
 ------------
