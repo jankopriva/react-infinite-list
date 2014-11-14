@@ -1,0 +1,11 @@
+.infinite-list {
+    overflow: auto  ;
+    width: 100px;
+    background: bisque;
+    position: relative;
+}
+
+.infinite-list-content {
+    margin: 0;
+    position: absolute;
+}
