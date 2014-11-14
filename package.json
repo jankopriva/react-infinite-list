@@ -1,19 +1,24 @@
 {
   "name": "react-infinite-list",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React list view component with infinite scrolling",
-  "main": "lib/index.js",
+  "scripts": {
+    "prepublish": "gulp"
+  },
   "keywords": [
     "react",
     "infinite",
     "list",
-    "listview",
     "scroll",
     "react-component"
   ],
   "authors": [
     "Jan Kopriva <jan.kopriva@email.cz>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jankopriva/react-infinite-list.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "browserify": "^6.2.0",
