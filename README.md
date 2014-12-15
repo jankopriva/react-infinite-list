@@ -23,7 +23,7 @@ Usage
         numOfVisibleItems={5}
         itemHeight={20}
         listItemClass={InfiniteListItem}
-    />,
+    />
 ```
 
 `items`, `numOfVisibleItems` and `itemHeight` are mandatory. The latter two controls
@@ -34,7 +34,7 @@ the height of the component.
 There are also some mandatory css rules:
 ```css
     .infinite-list {
-        overflow: auto  ;
+        overflow: auto;
         position: relative;
     }
 
