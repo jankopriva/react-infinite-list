@@ -1,0 +1,28 @@
+{
+  "name": "dev-stack",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.9.1",
+    "es6-loader": "^0.2.0",
+    "file-loader": "^0.8.1",
+    "gulp": "^3.8.10",
+    "gulp-util": "^3.0.2",
+    "nib": "^1.0.4",
+    "style-loader": "^0.8.3",
+    "stylus": "^0.49.3",
+    "stylus-loader": "^0.5.0",
+    "url-loader": "^0.5.5",
+    "webpack": "^1.5.3",
+    "webpack-dev-server": "^1.7.0"
+  },
+  "dependencies": {
+    "react": "^0.12.2"
+  }
+}
