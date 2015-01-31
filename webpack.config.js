@@ -19,18 +19,42 @@ module.exports = {
 
     module: {
         loaders: [
-            // required to write "require('./style.css')"
-            { test: /\.css$/,    loader: "style-loader!css-loader" },
+            {
+                test: /\.js$/,
+                loader: 'es6'
+            },
 
-            // required for react jsx
-            { test: /\.js$/,    loader: "es6" },
-            { test: /\.jsx$/,   loader: "es6!jsx?insertPragma=React.DOM&harmony" },
+            {
+                test: /\.jsx$/,
+                loader: 'es6!jsx?insertPragma=React.DOM&harmony'
+            },
+
+            {
+                test: /\.styl$/,
+                loader: 'style!css!stylus'
+            },
+
+            {
+                test: /\.css$/,
+                loader: 'style!css?sourceMap'
+            },
+
+            {
+                test: /\.png$/,
+                loader: 'url-loader?limit=100000&mimetype=image/png'
+            },
+
+            {
+                test: /\.jpg$/,
+                loader: 'file-loader'
+            }
         ]
     },
 
     resolve: {
         // Allow to omit extensions when requiring these files
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx', '.styl'],
+        modulesDirectories: ['node_modules', 'bower_components']
     },
 
     plugins: [],
