@@ -17,13 +17,6 @@ module.exports = {
         chunkFilename: "[chunkhash].js"
     },
 
-    output: {
-        path: path.join(__dirname, "dist"),
-        publicPath: "dist/",
-        filename: "[name].js",
-        chunkFilename: "[chunkhash].js"
-    },
-
     module: {
         loaders: [
             // required to write "require('./style.css')"
@@ -43,13 +36,13 @@ module.exports = {
     plugins: [],
 
     // webpack-dev-server options
-    contentBase: 'http://localhost/',
+    contentBase: 'http://localhost/app',
 
     quiet: false,
     noInfo: false,
     lazy: true,
     watchDelay: 300,
-    publicPath: '/app/',
+    publicPath: 'app/',
     stats: {
         colors: true
     }

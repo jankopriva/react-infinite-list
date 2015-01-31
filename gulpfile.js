@@ -33,20 +33,21 @@ gulp.task('webpack:build', function(callback) {
 gulp.task('webpack-dev-server', function(callback) {
     var devConfig = Object.create(webpackConfig);
 
-    devConfig.entry.app.push('webpack/hot/dev-server');
+    devConfig.devtool = "eval";
+    devConfig.debug = true;
+    devConfig.entry.app.concat(
+        'webpack-dev-server/client?http://localhost:8080/',
+        'webpack/hot/dev-server'
+    );
 
     devConfig.plugins = devConfig.plugins.concat(
         new webpack.DefinePlugin({
             DEBUG: true
-        })
+        }),
+        new webpack.HotModuleReplacementPlugin()
     );
 
-    devConfig.devtool = "eval";
-    devConfig.debug = true;
-
-    new WebpackDevServer(webpack(devConfig), {
-        // server and middleware options
-    }).listen(8080, 'localhost', function(err) {
+    new WebpackDevServer(webpack(devConfig)).listen(8080, 'localhost', function(err) {
         if(err) throw new gutil.PluginError('webpack-dev-server', err);
 
         // Server listening
