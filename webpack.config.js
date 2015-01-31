@@ -31,12 +31,12 @@ module.exports = {
 
             {
                 test: /\.styl$/,
-                loader: 'style!css!stylus'
+                loader: 'style!css?sourceMap!autoprefixer!stylus'
             },
 
             {
                 test: /\.css$/,
-                loader: 'style!css?sourceMap'
+                loader: 'style!css?sourceMap!autoprefixer'
             },
 
             {
