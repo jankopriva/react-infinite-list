@@ -7,7 +7,7 @@
 
 ## Develop
 1. Run ``` gulp ```
-2. Open http://localhost:8080/webpack-dev-server/
+2. Open http://localhost:3000/
 
 ## Deploy
 1. Run ``` gulp dist ```

@@ -2,31 +2,28 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    cache: true,
-
     entry: {
-        app: [
-            './app/app.js'
-        ]
+        app: ['./app/app']
     },
 
     output: {
-        path: path.join(__dirname, 'dist'),
-        publicPath: "dist/",
-        filename: "[name].js",
-        chunkFilename: "[chunkhash].js"
+        path: path.join(__dirname, '/app/'),
+        publicPath: '/app/',
+        filename: '[name].js',
+        chunkFilename: '[chunkhash].js'
     },
 
     module: {
         loaders: [
             {
                 test: /\.js$/,
-                loader: 'es6'
+                loader: 'react-hot!es6'
             },
 
             {
                 test: /\.jsx$/,
-                loader: 'es6!jsx?insertPragma=React.DOM&harmony'
+                loader: 'react-hot!es6!jsx?insertPragma=React.DOM&harmony',
+                exclude: /node_modules/
             },
 
             {
@@ -54,20 +51,16 @@ module.exports = {
     resolve: {
         // Allow to omit extensions when requiring these files
         extensions: ['', '.js', '.jsx', '.styl'],
-        modulesDirectories: ['node_modules', 'bower_components']
+        modulesDirectories: ['node_modules', 'bower_components'],
+
+        alias: {
+            react: path.join(__dirname, 'node_modules/react/')
+        }
     },
 
-    plugins: [],
-
-    // webpack-dev-server options
-    contentBase: 'http://localhost/app',
-
-    quiet: false,
-    noInfo: false,
-    lazy: true,
-    watchDelay: 300,
-    publicPath: 'app/',
-    stats: {
-        colors: true
-    }
+    plugins: [
+        new webpack.ProvidePlugin({
+            React: "react"
+        })
+    ]
 };
