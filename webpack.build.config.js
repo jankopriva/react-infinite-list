@@ -33,8 +33,18 @@ buildConfig.plugins = buildConfig.plugins.concat(
             'NODE_ENV': JSON.stringify('production')
         }
     }),
+
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin(uglifyOptions)
+    new webpack.optimize.UglifyJsPlugin(uglifyOptions),
+
+    function() {
+        this.plugin('done', function(stats) {
+            var filename = path.join(__dirname, 'dist', 'stats.json');
+            stats = JSON.stringify(stats.toJson(), null, '\t');
+
+            require('fs').writeFileSync(filename, stats);
+        });
+    }
 );
 
 module.exports = buildConfig;
