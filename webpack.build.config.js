@@ -8,11 +8,13 @@ var uglifyOptions = {
     compress: {
         sequences: true,
         dead_code: true,
+        drop_debugger: true,
         conditionals: true,
         booleans: true,
         unused: true,
         if_return: true,
-        join_vars: true
+        join_vars: true,
+        warnings: false
     }
 };
 
@@ -20,8 +22,7 @@ var buildConfig = _.assign(getWebpackConfig(), {
     output: {
         path: path.join(__dirname, '/dist/'),
         publicPath: '/dist/',
-        filename: '[name].js',
-        chunkFilename: '[chunkhash].js'
+        filename: '[name].[hash].js'
     },
 });
 

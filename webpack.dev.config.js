@@ -9,8 +9,7 @@ var devConfig = _.assign(getWebpackConfig(), {
     output: {
         path: path.join(__dirname, '/app/'),
         publicPath: '/app/',
-        filename: '[name].js',
-        chunkFilename: '[chunkhash].js'
+        filename: '[name].js'
     }
 });
 
