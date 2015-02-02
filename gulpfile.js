@@ -1,12 +1,18 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
+var clean = require('gulp-clean');
+
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 
 var webpackDevConfig = require('./webpack.dev.config.js');
 var webpackBuildConfig = require('./webpack.build.config.js');
 
-gulp.task('webpack:build', function(callback) {
+gulp.task('clean', function () {
+    return gulp.src('dist', {read: false}).pipe(clean());
+});
+
+gulp.task('webpack:build', ['clean'], function(callback) {
     webpack(webpackBuildConfig, function(err, stats) {
         if (err) throw new gutil.PluginError('[webpack:build]', err);
 
