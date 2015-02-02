@@ -1,8 +1,29 @@
 var _ = require('lodash');
+var path = require('path');
 var webpack = require('webpack');
-var webpackConfig = require('./webpack.config.js');
+var getWebpackConfig = require('./webpack.config.js');
 
-var buildConfig = _.assign({}, webpackConfig);
+var uglifyOptions = {
+    mangle: true,
+    compress: {
+        sequences: true,
+        dead_code: true,
+        conditionals: true,
+        booleans: true,
+        unused: true,
+        if_return: true,
+        join_vars: true
+    }
+};
+
+var buildConfig = _.assign(getWebpackConfig(), {
+    output: {
+        path: path.join(__dirname, '/dist/'),
+        publicPath: '/dist/',
+        filename: '[name].js',
+        chunkFilename: '[chunkhash].js'
+    },
+});
 
 buildConfig.plugins = buildConfig.plugins.concat(
     new webpack.DefinePlugin({
@@ -12,7 +33,7 @@ buildConfig.plugins = buildConfig.plugins.concat(
         }
     }),
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin(uglifyOptions)
 );
 
 module.exports = buildConfig;

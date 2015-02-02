@@ -1,9 +1,17 @@
 var _ = require('lodash');
+var path = require('path');
 var webpack = require('webpack');
-var webpackConfig = require('./webpack.config.js');
+var getWebpackConfig = require('./webpack.config.js');
 
-var devConfig = _.assign({}, webpackConfig, {
-    devtool: 'eval'
+var devConfig = _.assign(getWebpackConfig(), {
+    devtool: 'eval',
+
+    output: {
+        path: path.join(__dirname, '/app/'),
+        publicPath: '/app/',
+        filename: '[name].js',
+        chunkFilename: '[chunkhash].js'
+    }
 });
 
 _.keysIn(devConfig.entry).forEach(function(key, index) {

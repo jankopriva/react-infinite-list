@@ -1,66 +1,63 @@
 var path = require('path');
 var webpack = require('webpack');
 
-module.exports = {
-    entry: {
-        app: ['./app/app']
-    },
+module.exports = function getWebpackConfig() {
+    return {
+        entry: {
+            app: ['./app/app']
+        },
 
-    output: {
-        path: path.join(__dirname, '/app/'),
-        publicPath: '/app/',
-        filename: '[name].js',
-        chunkFilename: '[chunkhash].js'
-    },
+        output: {},
 
-    module: {
-        loaders: [
-            {
-                test: /\.js$/,
-                loader: 'react-hot!es6'
-            },
+        module: {
+            loaders: [
+                {
+                    test: /\.js$/,
+                    loader: 'react-hot!es6'
+                },
 
-            {
-                test: /\.jsx$/,
-                loader: 'react-hot!es6!jsx?insertPragma=React.DOM&harmony',
-                exclude: /node_modules/
-            },
+                {
+                    test: /\.jsx$/,
+                    loader: 'react-hot!es6!jsx?insertPragma=React.DOM&harmony',
+                    exclude: /node_modules/
+                },
 
-            {
-                test: /\.styl$/,
-                loader: 'style!css?sourceMap!autoprefixer!stylus'
-            },
+                {
+                    test: /\.styl$/,
+                    loader: 'style!css?sourceMap!autoprefixer!stylus'
+                },
 
-            {
-                test: /\.css$/,
-                loader: 'style!css?sourceMap!autoprefixer'
-            },
+                {
+                    test: /\.css$/,
+                    loader: 'style!css?sourceMap!autoprefixer'
+                },
 
-            {
-                test: /\.png$/,
-                loader: 'url-loader?limit=100000&mimetype=image/png'
-            },
+                {
+                    test: /\.png$/,
+                    loader: 'url-loader?limit=100000&mimetype=image/png'
+                },
 
-            {
-                test: /\.jpg$/,
-                loader: 'file-loader'
+                {
+                    test: /\.jpg$/,
+                    loader: 'file-loader'
+                }
+            ]
+        },
+
+        resolve: {
+            // Allow to omit extensions when requiring these files
+            extensions: ['', '.js', '.jsx', '.styl'],
+            modulesDirectories: ['node_modules', 'bower_components'],
+
+            alias: {
+                react: path.join(__dirname, 'node_modules/react/')
             }
+        },
+
+        plugins: [
+            new webpack.ProvidePlugin({
+                React: "react"
+            })
         ]
-    },
-
-    resolve: {
-        // Allow to omit extensions when requiring these files
-        extensions: ['', '.js', '.jsx', '.styl'],
-        modulesDirectories: ['node_modules', 'bower_components'],
-
-        alias: {
-            react: path.join(__dirname, 'node_modules/react/')
-        }
-    },
-
-    plugins: [
-        new webpack.ProvidePlugin({
-            React: "react"
-        })
-    ]
+    }
 };
