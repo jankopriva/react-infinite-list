@@ -2,6 +2,7 @@ var _ = require('lodash');
 var path = require('path');
 var webpack = require('webpack');
 var getWebpackConfig = require('./webpack.config.js');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 var uglifyOptions = {
     mangle: true,
@@ -21,7 +22,7 @@ var uglifyOptions = {
 var buildConfig = _.assign(getWebpackConfig(), {
     output: {
         path: path.join(__dirname, '/dist/'),
-        publicPath: '/dist/',
+        publicPath: '/',
         filename: '[name].[hash].js'
     },
 });
@@ -36,6 +37,7 @@ buildConfig.plugins = buildConfig.plugins.concat(
 
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin(uglifyOptions),
+    new HtmlWebpackPlugin(),
 
     function() {
         this.plugin('done', function(stats) {
