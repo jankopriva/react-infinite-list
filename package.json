@@ -1,7 +1,8 @@
 {
   "name": "react-infinite-list",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "React list view component with infinite scrolling",
+  "main": "src/infinite_list.js",
   "scripts": {
     "prepublish": "gulp"
   },
