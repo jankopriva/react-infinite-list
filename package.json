@@ -4,19 +4,26 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run dev",
+    "dev": "./node_modules/gulp/bin/gulp.js",
+    "build": "./node_modules/gulp/bin/gulp.js build"
   },
-  "author": "",
-  "license": "ISC",
+  "author": {
+    "name": "Zdenek Kostal",
+    "email": "kostal.zdenek@gmail.com",
+    "url": "https://github.com/zdenekkostal/"
+  },
   "devDependencies": {
     "autoprefixer-loader": "1.1.0",
+    "babel-core": "4.6.0",
+    "babel-loader": "4.0.0",
+    "babel-runtime": "^4.6.0",
     "browserslist": "0.2.0",
     "caniuse-db": "1.0.30000060",
     "css-loader": "0.9.1",
-    "es6-loader": "0.2.0",
+    "del": "^1.1.1",
     "file-loader": "0.8.1",
-    "gulp": "3.8.11",
-    "gulp-clean": "0.3.1",
+    "gulp": "^3.8.11",
     "gulp-util": "3.0.2",
     "html-webpack-plugin": "1.1.0",
     "json5": "0.4.0",
@@ -30,6 +37,7 @@
     "stylus": "0.49.3",
     "stylus-loader": "0.5.0",
     "url-loader": "0.5.5",
+    "vinyl-paths": "^1.0.0",
     "webpack": "1.5.3",
     "webpack-dev-server": "1.7.0"
   },

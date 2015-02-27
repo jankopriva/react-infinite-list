@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
-var clean = require('gulp-clean');
+var del = require('del');
+var vinylPaths = require('vinyl-paths');
 
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
@@ -9,7 +10,9 @@ var webpackDevConfig = require('./webpack.dev.config.js');
 var webpackBuildConfig = require('./webpack.build.config.js');
 
 gulp.task('clean', function () {
-    return gulp.src('dist', {read: false}).pipe(clean());
+    return gulp
+        .src('dist', {read: false})
+        .pipe(vinylPaths(del));
 });
 
 gulp.task('webpack:build', ['clean'], function(callback) {

@@ -13,12 +13,13 @@ module.exports = function getWebpackConfig() {
             loaders: [
                 {
                     test: /\.js$/,
-                    loader: 'react-hot!es6'
+                    loader: 'react-hot!babel-loader',
+                    exclude: /node_modules/
                 },
 
                 {
                     test: /\.jsx$/,
-                    loader: 'react-hot!es6!jsx?insertPragma=React.DOM&harmony',
+                    loader: 'react-hot!babel-loader!jsx?harmony',
                     exclude: /node_modules/
                 },
 
