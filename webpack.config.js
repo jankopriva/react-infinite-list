@@ -33,9 +33,10 @@ module.exports = function getWebpackConfig() {
                     loader: 'style!css?sourceMap!autoprefixer'
                 },
 
+                // https://msdn.microsoft.com/en-us/library/cc848897(v=vs.85).aspx
                 {
-                    test: /\.png$/,
-                    loader: 'url-loader?limit=100000&mimetype=image/png'
+                    test: /\.(png|svg)$/,
+                    loader: 'url-loader?limit=32768&mimetype=image/png'
                 },
 
                 {
