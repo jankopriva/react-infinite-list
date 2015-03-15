@@ -13,7 +13,7 @@ var devConfig = _.assign(getWebpackConfig(), {
     }
 });
 
-_.keysIn(devConfig.entry).forEach(function(key, index) {
+_.keysIn(devConfig.entry).forEach(function(key) {
     var currentValue = devConfig.entry[key];
 
     devConfig.entry[key] = currentValue.concat(

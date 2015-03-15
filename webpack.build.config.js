@@ -8,13 +8,13 @@ var uglifyOptions = {
     mangle: true,
     compress: {
         sequences: true,
-        dead_code: true,
-        drop_debugger: true,
+        'dead_code': true,
+        'drop_debugger': true,
         conditionals: true,
         booleans: true,
         unused: true,
-        if_return: true,
-        join_vars: true,
+        'if_return': true,
+        'join_vars': true,
         warnings: false
     }
 };
@@ -24,7 +24,7 @@ var buildConfig = _.assign(getWebpackConfig(), {
         path: path.join(__dirname, '/dist/'),
         publicPath: '/',
         filename: '[name].[hash].js'
-    },
+    }
 });
 
 buildConfig.plugins = buildConfig.plugins.concat(

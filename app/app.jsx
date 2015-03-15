@@ -10,5 +10,5 @@ React.render(
 if (DEBUG) {
     console.log('dev');
 } else {
-    console.log('production')
+    console.log('production');
 }

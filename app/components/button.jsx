@@ -1,7 +1,9 @@
 export default React.createClass({
     render: function() {
-        return <button>
-            {this.props.value}
-        </button>
+        return (
+            <button>
+                {this.props.value}
+            </button>
+        );
     }
 })
