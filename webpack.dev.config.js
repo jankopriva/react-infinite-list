@@ -8,7 +8,10 @@ var devConfig = _.assign(getWebpackConfig(), {
 
     output: {
         path: path.join(__dirname, '/app/'),
-        publicPath: '/app/',
+
+        // Specify complete path to force
+        // chrome/FF load the images
+        publicPath: 'http://localhost:3000/app/',
         filename: '[name].js'
     }
 });
