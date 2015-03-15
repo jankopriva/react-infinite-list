@@ -35,7 +35,6 @@ devConfig.plugins = devConfig.plugins.concat(
     new webpack.DefinePlugin({
         DEBUG: true
     }),
-    new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
 );
 

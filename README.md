@@ -6,9 +6,9 @@
 - Hot module replacement
 
 ## Develop
-1. Run ``` gulp ```
-2. Open http://localhost:3000/
+- Run the app with ``` npm start ``` (opens http://localhost:3000/)
+- Run the tests with ``` npm test ```
 
 ## Deploy
-1. Run ``` gulp dist ```
-2. Profit
+- Build the application ``` npm run build ```
+- Run tests in CI ``` npm run ci ```
