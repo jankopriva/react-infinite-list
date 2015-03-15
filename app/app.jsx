@@ -4,7 +4,7 @@ import Button from './components/button';
 
 React.render(
     <Button value="Hello world" />,
-    document.body
+    document.getElementById('app')
 );
 
 if (DEBUG) {
