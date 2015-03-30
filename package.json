@@ -18,8 +18,8 @@
   },
   "devDependencies": {
     "autoprefixer-loader": "1.1.0",
-    "babel-core": "4.6.0",
-    "babel-loader": "4.0.0",
+    "babel-core": "^4.7.0",
+    "babel-loader": "^4.2.0",
     "babel-runtime": "^4.6.0",
     "browserslist": "0.2.0",
     "caniuse-db": "1.0.30000060",
@@ -28,7 +28,6 @@
     "file-loader": "0.8.1",
     "html-webpack-plugin": "1.1.0",
     "json5": "0.4.0",
-    "jsx-loader": "0.12.2",
     "karma": "^0.12.31",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^0.1.7",

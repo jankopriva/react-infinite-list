@@ -19,7 +19,7 @@ module.exports = function getWebpackConfig() {
 
                 {
                     test: /\.jsx$/,
-                    loader: 'babel-loader!jsx?harmony',
+                    loader: 'babel-loader',
                     exclude: /node_modules/
                 },
 
