@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rm -rf build/*",
     "start": "npm run dev",
-    "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.dev.config.js --hot --port 3000 --progress --colors & open http://localhost:3000/",
+    "dev": "open http://localhost:3000/ && ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.dev.config.js --hot --port 3000 --progress --colors",
     "build": "npm run clean && ./node_modules/webpack/bin/webpack.js --config webpack.build.config.js --progress --colors",
     "test": "./node_modules/karma/bin/karma start",
     "ci": "./node_modules/karma/bin/karma start --single-run --no-auto-watch"
