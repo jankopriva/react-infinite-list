@@ -41,6 +41,7 @@
     "num2fraction": "1.0.1",
     "postcss": "4.0.3",
     "react-hot-loader": "1.1.4",
+    "sass-loader": "^0.4.1",
     "sinon": "^1.13.0",
     "sinon-chai": "^2.7.0",
     "style-loader": "0.8.3",

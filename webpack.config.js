@@ -29,6 +29,11 @@ module.exports = function getWebpackConfig() {
                 },
 
                 {
+                    test: /\.scss$/,
+                    loader: 'style!css?sourceMap!autoprefixer!sass'
+                },
+
+                {
                     test: /\.css$/,
                     loader: 'style!css?sourceMap!autoprefixer'
                 },
@@ -53,7 +58,7 @@ module.exports = function getWebpackConfig() {
 
         resolve: {
             // Allow to omit extensions when requiring these files
-            extensions: ['', '.js', '.jsx', '.styl'],
+            extensions: ['', '.js', '.jsx', '.styl', '.scss'],
             modulesDirectories: ['node_modules', 'bower_components'],
 
             alias: {
