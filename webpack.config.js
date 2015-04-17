@@ -42,6 +42,11 @@ module.exports = function getWebpackConfig() {
                 {
                     test: /\.jpg$/,
                     loader: 'file-loader'
+                },
+
+                {
+                    test: /\.(eot|woff|ttf|svg)/,
+                    loader: 'file-loader'
                 }
             ]
         },
