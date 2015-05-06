@@ -22,6 +22,15 @@ module.exports = React.createClass({
         }
     },
 
+    renderFromStart: function () {
+        this.getDOMNode().scrollTop = 0;
+
+        this.setState({
+            renderedStart: 0,
+            renderedEnd: this.props.numOfVisibleItems
+        });
+    },
+
     _showItems: function(visibleStart, visibleEnd) {
         this.setState({
             renderedStart: visibleStart,
