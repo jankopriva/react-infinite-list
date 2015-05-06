@@ -3,7 +3,7 @@
 
 var React = require('react');
 
-var InfiniteListItem = React.createClass({displayName: "InfiniteListItem",
+var InfiniteListItem = React.createClass({displayName: 'InfiniteListItem',
     render: function() {
         return (
             React.createElement("div", {className: "infinite-list-item", style: {height: this.props.height}}, this.props.item.title)
@@ -11,7 +11,7 @@ var InfiniteListItem = React.createClass({displayName: "InfiniteListItem",
     }
 });
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({displayName: 'exports',
     onScroll: function() {
         var scrolledPx = this.getDOMNode().scrollTop;
 
