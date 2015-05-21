@@ -21,7 +21,7 @@ var uglifyOptions = {
 
 var buildConfig = _.assign(getWebpackConfig(), {
     output: {
-        path: path.join(__dirname, '/dist/'),
+        path: path.join(__dirname, '/build/'),
         publicPath: '/',
         filename: '[name].[hash].js'
     }
@@ -43,7 +43,7 @@ buildConfig.plugins = buildConfig.plugins.concat(
 
     function() {
         this.plugin('done', function(stats) {
-            var filename = path.join(__dirname, 'dist', 'stats.json');
+            var filename = path.join(__dirname, 'build', 'stats.json');
             stats = JSON.stringify(stats.toJson(), null, '\t');
 
             require('fs').writeFileSync(filename, stats);
