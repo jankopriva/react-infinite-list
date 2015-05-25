@@ -1,0 +1,28 @@
+{
+    "parser": "babel-eslint",
+
+    "env": {
+        // I write for browser
+        "browser": true,
+
+        // in CommonJS
+        "node": true,
+
+        // with mocha
+        "mocha": true
+    },
+
+    "rules": {
+        "quotes": [2, "single"],
+        "eol-last": [0],
+        "no-mixed-requires": [0],
+        "no-underscore-dangle": [0],
+        "strict": [2, "never"]
+    },
+
+    "globals": {
+        "expect": true,
+        "DEBUG": true,
+        "React": true
+    }
+}

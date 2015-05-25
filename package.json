@@ -1,34 +1,57 @@
 {
-  "name": "react-infinite-list",
-  "version": "0.0.5",
-  "description": "React list view component with infinite scrolling",
-  "main": "src/infinite_list.js",
+  "name": "dev-stack",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.html",
   "scripts": {
-    "prepublish": "gulp"
+    "clean": "rm -rf build/*",
+    "start": "npm run dev",
+    "dev": "open http://localhost:3000/ && ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.dev.config.js --hot --port 3000 --progress --colors",
+    "build": "npm run clean && ./node_modules/webpack/bin/webpack.js --config webpack.build.config.js --progress --colors",
+    "test": "./node_modules/karma/bin/karma start",
+    "ci": "./node_modules/karma/bin/karma start --single-run --no-auto-watch"
   },
-  "keywords": [
-    "react",
-    "infinite",
-    "list",
-    "scroll",
-    "react-component"
-  ],
-  "authors": [
-    "Jan Kopriva <jan.kopriva@email.cz>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jankopriva/react-infinite-list.git"
+  "author": {
+    "name": "Zdenek Kostal",
+    "email": "kostal.zdenek@gmail.com",
+    "url": "https://github.com/zdenekkostal/"
   },
-  "license": "MIT",
   "devDependencies": {
-    "browserify": "^6.2.0",
-    "del": "^0.1.3",
-    "gulp": "^3.8.9",
-    "reactify": "^0.15.2",
-    "vinyl-source-stream": "^1.0.0"
+    "autoprefixer-loader": "1.1.0",
+    "babel-core": "^4.7.0",
+    "babel-loader": "^4.2.0",
+    "babel-runtime": "^4.6.0",
+    "browserslist": "0.2.0",
+    "caniuse-db": "1.0.30000060",
+    "chai": "^2.1.1",
+    "css-loader": "0.9.1",
+    "file-loader": "0.8.1",
+    "html-webpack-plugin": "1.1.0",
+    "json5": "0.4.0",
+    "karma": "^0.12.31",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-mocha": "^0.1.10",
+    "karma-mocha-reporter": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.4",
+    "karma-webpack": "^1.5.0",
+    "lodash": "3.0.1",
+    "mocha": "^2.1.0",
+    "nib": "1.0.4",
+    "num2fraction": "1.0.1",
+    "postcss": "4.0.3",
+    "react-hot-loader": "1.1.4",
+    "sass-loader": "^0.4.1",
+    "sinon": "^1.13.0",
+    "sinon-chai": "^2.7.0",
+    "style-loader": "0.8.3",
+    "stylus": "0.49.3",
+    "stylus-loader": "0.5.0",
+    "url-loader": "0.5.5",
+    "webpack": "1.5.3",
+    "webpack-dev-server": "1.7.0"
   },
   "dependencies": {
-    "react": "~0.12.x"
+    "react": "^0.13.2"
   }
 }
