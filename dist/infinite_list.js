@@ -45,8 +45,6 @@ var InfiniteList = React.createClass({displayName: "InfiniteList",
         var itemsChanged = this.props.items.length !== nextProps.items.length,
             visibleItemsChanged = this.props.numOfVisibleItems !== nextProps.numOfVisibleItems;
 
-        console.log(this.props.numOfVisibleItems, nextProps.numOfVisibleItems, visibleItemsChanged);
-
         // scroll to the top when searching
         if (itemsChanged) {
             this.getDOMNode().scrollTop = 0;
@@ -57,24 +55,24 @@ var InfiniteList = React.createClass({displayName: "InfiniteList",
         }
     },
 
-    _getListItemClass: function(item, height) {
+    _getListItemClass: function(item, height, key) {
         if (this.props.listItemClass) {
-            return React.createElement(this.props.listItemClass, {item: item, height: height});
+            return React.createElement(this.props.listItemClass, {item: item, height: height, key: key});
         }
 
-        return React.createElement(InfiniteListItem, {item: item, height: height});
+        return React.createElement(InfiniteListItem, {item: item, height: height, key: key});
     },
 
     render: function() {
-        var itemsToRender = {};
+        var itemsToRender = [];
 
-        itemsToRender['top'] = (React.createElement("div", {className: "topitem", 
-            style: {height: this.state.renderedStart * this.props.itemHeight}}));
+        itemsToRender.push(React.createElement("div", {className: "topitem", 
+            style: {height: this.state.renderedStart * this.props.itemHeight}, key: "top"}));
 
         for (var i = this.state.renderedStart; i <= this.state.renderedEnd; i++) {
             var item = this.props.items[i];
-            itemsToRender['item ' + i] = this._getListItemClass(item,
-                this.props.itemHeight);
+            itemsToRender.push(this._getListItemClass(item,
+                this.props.itemHeight, 'item ' + i));
         }
 
         return (

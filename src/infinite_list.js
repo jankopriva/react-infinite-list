@@ -54,24 +54,24 @@ var InfiniteList = React.createClass({
         }
     },
 
-    _getListItemClass: function(item, height) {
+    _getListItemClass: function(item, height, key) {
         if (this.props.listItemClass) {
-            return <this.props.listItemClass item={item} height={height}/>;
+            return <this.props.listItemClass item={item} height={height} key={key}/>;
         }
 
-        return <InfiniteListItem item={item} height={height}/>;
+        return <InfiniteListItem item={item} height={height} key={key}/>;
     },
 
     render: function() {
-        var itemsToRender = {};
+        var itemsToRender = [];
 
-        itemsToRender['top'] = (<div className="topitem"
-            style={{height: this.state.renderedStart * this.props.itemHeight}} />);
+        itemsToRender.push(<div className="topitem"
+            style={{height: this.state.renderedStart * this.props.itemHeight}} key="top" />);
 
         for (var i = this.state.renderedStart; i <= this.state.renderedEnd; i++) {
             var item = this.props.items[i];
-            itemsToRender['item ' + i] = this._getListItemClass(item,
-                this.props.itemHeight);
+            itemsToRender.push(this._getListItemClass(item,
+                this.props.itemHeight, 'item ' + i));
         }
 
         return (
