@@ -11,32 +11,9 @@ var InfiniteListItem = React.createClass({displayName: "InfiniteListItem",
     }
 });
 
-module.exports = React.createClass({displayName: "exports",
-    onScroll: function() {
-        var scrolledPx = this.getDOMNode().scrollTop;
-
-        var visibleStart = parseInt(scrolledPx / this.props.itemHeight);
-        var visibleEnd = Math.min(visibleStart + this.props.numOfVisibleItems, this.props.items.length - 1);
-
-        if (visibleStart !== this.state.renderedStart) {
-            this._showItems(visibleStart, visibleEnd);
-        }
-    },
-
-    renderFromStart: function () {
-        this.getDOMNode().scrollTop = 0;
-
-        this.setState({
-            renderedStart: 0,
-            renderedEnd: this.props.numOfVisibleItems
-        });
-    },
-
-    _showItems: function(visibleStart, visibleEnd) {
-        this.setState({
-            renderedStart: visibleStart,
-            renderedEnd: visibleEnd
-        });
+var InfiniteList = React.createClass({displayName: "InfiniteList",
+    propTypes: {
+        items: React.PropTypes.array.isRequired
     },
 
     getInitialState: function() {
@@ -46,24 +23,56 @@ module.exports = React.createClass({displayName: "exports",
         };
     },
 
-    _getListItemClass: function(item, height) {
-        if (this.props.listItemClass) {
-            return React.createElement(this.props.listItemClass, {item: item, height: height});
+    onScroll: function() {
+        this._calculateVisibleItems();
+    },
+
+    _calculateVisibleItems: function() {
+        var scrolledPx = this.getDOMNode().scrollTop;
+
+        var visibleStart = parseInt(scrolledPx / this.props.itemHeight);
+        var visibleEnd = Math.min(visibleStart + this.props.numOfVisibleItems, this.props.items.length - 1);
+
+        if (visibleStart !== this.state.renderedStart) {
+            this.setState({
+                renderedStart: visibleStart,
+                renderedEnd: visibleEnd
+            });
+        }
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        var itemsChanged = this.props.items.length !== nextProps.items.length,
+            visibleItemsChanged = this.props.numOfVisibleItems !== nextProps.numOfVisibleItems;
+
+        // scroll to the top when searching
+        if (itemsChanged) {
+            this.getDOMNode().scrollTop = 0;
         }
 
-        return React.createElement(InfiniteListItem, {item: item, height: height});
+        if (itemsChanged || visibleItemsChanged) {
+            this._calculateVisibleItems();
+        }
+    },
+
+    _getListItemClass: function(item, height, key) {
+        if (this.props.listItemClass) {
+            return React.createElement(this.props.listItemClass, {item: item, height: height, key: key});
+        }
+
+        return React.createElement(InfiniteListItem, {item: item, height: height, key: key});
     },
 
     render: function() {
-        var itemsToRender = {};
+        var itemsToRender = [];
 
-        itemsToRender['top'] = (React.createElement("div", {className: "topitem", 
-            style: {height: this.state.renderedStart * this.props.itemHeight}}));
+        itemsToRender.push(React.createElement("div", {className: "topitem", 
+            style: {height: this.state.renderedStart * this.props.itemHeight}, key: "top"}));
 
         for (var i = this.state.renderedStart; i <= this.state.renderedEnd; i++) {
             var item = this.props.items[i];
-            itemsToRender['item ' + i] = this._getListItemClass(item,
-                this.props.itemHeight);
+            itemsToRender.push(this._getListItemClass(item,
+                this.props.itemHeight, 'item ' + i));
         }
 
         return (
@@ -77,5 +86,8 @@ module.exports = React.createClass({displayName: "exports",
         );
     }
 });
+
+module.exports = InfiniteList;
+
 },{"react":"react"}]},{},[1])(1)
 });
