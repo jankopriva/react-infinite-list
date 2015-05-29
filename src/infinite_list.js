@@ -10,32 +10,9 @@ var InfiniteListItem = React.createClass({
     }
 });
 
-module.exports = React.createClass({
-    onScroll: function() {
-        var scrolledPx = this.getDOMNode().scrollTop;
-
-        var visibleStart = parseInt(scrolledPx / this.props.itemHeight);
-        var visibleEnd = Math.min(visibleStart + this.props.numOfVisibleItems, this.props.items.length - 1);
-
-        if (visibleStart !== this.state.renderedStart) {
-            this._showItems(visibleStart, visibleEnd);
-        }
-    },
-
-    renderFromStart: function () {
-        this.getDOMNode().scrollTop = 0;
-
-        this.setState({
-            renderedStart: 0,
-            renderedEnd: this.props.numOfVisibleItems
-        });
-    },
-
-    _showItems: function(visibleStart, visibleEnd) {
-        this.setState({
-            renderedStart: visibleStart,
-            renderedEnd: visibleEnd
-        });
+var InfiniteList = React.createClass({
+    propTypes: {
+        items: React.PropTypes.array.isRequired
     },
 
     getInitialState: function() {
@@ -43,6 +20,38 @@ module.exports = React.createClass({
             renderedStart: 0,
             renderedEnd: this.props.numOfVisibleItems
         };
+    },
+
+    onScroll: function() {
+        this._calculateVisibleItems();
+    },
+
+    _calculateVisibleItems: function() {
+        var scrolledPx = this.getDOMNode().scrollTop;
+
+        var visibleStart = parseInt(scrolledPx / this.props.itemHeight);
+        var visibleEnd = Math.min(visibleStart + this.props.numOfVisibleItems, this.props.items.length - 1);
+
+        if (visibleStart !== this.state.renderedStart) {
+            this.setState({
+                renderedStart: visibleStart,
+                renderedEnd: visibleEnd
+            });
+        }
+    },
+
+    componentWillReceiveProps: function(nextProps) {
+        var itemsChanged = this.props.items.length !== nextProps.items.length,
+            visibleItemsChanged = this.props.numOfVisibleItems !== nextProps.numOfVisibleItems;
+
+        // scroll to the top when searching
+        if (itemsChanged) {
+            this.getDOMNode().scrollTop = 0;
+        }
+
+        if (itemsChanged || visibleItemsChanged) {
+            this._calculateVisibleItems();
+        }
     },
 
     _getListItemClass: function(item, height) {
@@ -76,3 +85,5 @@ module.exports = React.createClass({
         );
     }
 });
+
+module.exports = InfiniteList;
