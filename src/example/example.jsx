@@ -1,6 +1,5 @@
-import React from 'react/addons';
-//import InfiniteList from '../../dist/InfiniteList';
-var  InfiniteList = require('../../dist/InfiniteList.js');
+import React from 'react';
+var InfiniteList = require('../InfiniteList.jsx');
 
 require('./styles/app.scss');
 
