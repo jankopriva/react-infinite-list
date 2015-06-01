@@ -19,15 +19,7 @@ var uglifyOptions = {
     }
 };
 
-var buildConfig = _.assign(getWebpackConfig(), {
-    output: {
-        path: path.join(__dirname, '/build/'),
-        publicPath: '/',
-        filename: '[name].[hash].js'
-    }
-});
-
-buildConfig.plugins = buildConfig.plugins.concat(
+var plugins = [
     new webpack.DefinePlugin({
         'process.env': {
             // This has effect on the react lib size
@@ -36,19 +28,40 @@ buildConfig.plugins = buildConfig.plugins.concat(
     }),
 
     new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin(uglifyOptions),
-    new HtmlWebpackPlugin({
-        template: 'index.build.html'
-    }),
+];
 
-    function() {
-        this.plugin('done', function(stats) {
-            var filename = path.join(__dirname, 'build', 'stats.json');
-            stats = JSON.stringify(stats.toJson(), null, '\t');
+var filename = 'react-infinite-list';
 
-            require('fs').writeFileSync(filename, stats);
-        });
+if (process.env.NODE_ENV === 'production') {
+    plugins.push(
+        new webpack.optimize.UglifyJsPlugin({
+            compressor: {
+                warnings: false
+            }
+        })
+    );
+
+    filename = filename + '.min';
+}
+
+var buildConfig = _.assign(getWebpackConfig(), {
+    entry: {
+        lib: './src/InfiniteList'
+    },
+
+    output: {
+        path: path.join(__dirname, '/dist/'),
+        filename: filename + '.js',
+        library: 'react-infinite-list',
+        libraryTarget: 'umd'
+    },
+
+    externals: {
+        'react': 'React',
+        'react/addons': 'React'
     }
-);
+});
+
+buildConfig.plugins = buildConfig.plugins.concat(plugins);
 
 module.exports = buildConfig;

@@ -1,12 +1,11 @@
 {
-<<<<<<< HEAD
   "name": "react-infinite-list",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "authors": [
     "jan.kopriva@email.cz"
   ],
   "description": "React list view component with infinite scrolling",
-  "main": "dist/inifinite-list.js",
+  "main": "dist/react-infinite-list.min.js",
   "keywords": [
     "react",
     "listview",
@@ -19,11 +18,17 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "example",
-    "gulpfile.js",
     "package.json",
-    "test",
-    "tests",
-    "src"
-  ]
+    "src",
+    "index.html",
+    ".gitignore",
+    ".npmignore",
+    "bower.json",
+    ".bowerrc",
+    "README.md",
+    "webpack.*"
+  ],
+  "dependencies": {
+      "react": "~0.13.2"
+  }
 }

@@ -4,10 +4,8 @@ var webpack = require('webpack');
 module.exports = function getWebpackConfig() {
     return {
         entry: {
-            app: ['./app/app']
+            app: ['./src/example/example']
         },
-
-        output: {},
 
         module: {
             loaders: [
@@ -24,11 +22,6 @@ module.exports = function getWebpackConfig() {
                 },
 
                 {
-                    test: /\.styl$/,
-                    loader: 'style!css?sourceMap!autoprefixer!stylus'
-                },
-
-                {
                     test: /\.scss$/,
                     loader: 'style!css?sourceMap!autoprefixer!sass'
                 },
@@ -36,29 +29,13 @@ module.exports = function getWebpackConfig() {
                 {
                     test: /\.css$/,
                     loader: 'style!css?sourceMap!autoprefixer'
-                },
-
-                // https://msdn.microsoft.com/en-us/library/cc848897(v=vs.85).aspx
-                {
-                    test: /\.(png|svg)$/,
-                    loader: 'url-loader?limit=32768&mimetype=image/png'
-                },
-
-                {
-                    test: /\.jpg$/,
-                    loader: 'file-loader'
-                },
-
-                {
-                    test: /\.(eot|woff|ttf|svg)/,
-                    loader: 'file-loader'
                 }
             ]
         },
 
         resolve: {
             // Allow to omit extensions when requiring these files
-            extensions: ['', '.js', '.jsx', '.styl', '.scss'],
+            extensions: ['', '.js', '.jsx', '.scss'],
             modulesDirectories: ['node_modules', 'bower_components'],
 
             alias: {

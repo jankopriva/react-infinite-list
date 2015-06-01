@@ -1,18 +1,16 @@
-/** @jsx React.DOM */
+import React from 'react/addons';
 
-var React = require('react');
-
-var InfiniteListItem = React.createClass({
-    render: function() {
+class InfiniteListItem extends React.Component {
+    render() {
         return (
-            <div className="infinite-list-item" style={{height: this.props.height}}>{this.props.item.title}</div>
+            <div className="infinite-list-item" style={{height: this.props.height}}>{this.props.title}</div>
         );
     }
-});
+}
 
-module.exports = React.createClass({
-    onScroll: function() {
-        var scrolledPx = this.getDOMNode().scrollTop;
+export default class InfiniteList extends React.Component {
+    onScroll() {
+        var scrolledPx = React.findDOMNode(this).scrollTop;
 
         var visibleStart = parseInt(scrolledPx / this.props.itemHeight);
         var visibleEnd = Math.min(visibleStart + this.props.numOfVisibleItems, this.props.items.length - 1);
@@ -20,41 +18,43 @@ module.exports = React.createClass({
         if (visibleStart !== this.state.renderedStart) {
             this._showItems(visibleStart, visibleEnd);
         }
-    },
+    }
 
-    renderFromStart: function () {
+    renderFromStart() {
         this.getDOMNode().scrollTop = 0;
 
         this.setState({
             renderedStart: 0,
             renderedEnd: this.props.numOfVisibleItems
         });
-    },
+    }
 
-    _showItems: function(visibleStart, visibleEnd) {
+    _showItems(visibleStart, visibleEnd) {
         this.setState({
             renderedStart: visibleStart,
             renderedEnd: visibleEnd
         });
-    },
+    }
 
-    getInitialState: function() {
-        return {
+    constructor(props) {
+        super(props);
+
+        this.state = {
             renderedStart: 0,
             renderedEnd: this.props.numOfVisibleItems
         };
-    },
+    }
 
-    _getListItemClass: function(item, height) {
+    _getListItemClass(item, height) {
         if (this.props.listItemClass) {
-            return <this.props.listItemClass item={item} height={height}/>;
+            return <this.props.listItemClass key={item.id} {...item} height={height}/>;
         }
 
-        return <InfiniteListItem item={item} height={height}/>;
-    },
+        return <InfiniteListItem key={item.id} {...item} height={height}/>;
+    }
 
-    render: function() {
-        var itemsToRender = {};
+    render() {
+        let itemsToRender = {};
 
         itemsToRender['top'] = (<div className="topitem"
             style={{height: this.state.renderedStart * this.props.itemHeight}} />);
@@ -66,13 +66,13 @@ module.exports = React.createClass({
         }
 
         return (
-            <div className="infinite-list" onScroll={this.onScroll}
+            <div className="infinite-list" onScroll={this.onScroll.bind(this)}
                 style={{height: this.props.itemHeight * this.props.numOfVisibleItems}}>
                 <div className="infinite-list-content"
                     style={{height: this.props.items.length * this.props.itemHeight}}>
-                    {itemsToRender}
+                    {React.addons.createFragment(itemsToRender)}
                 </div>
             </div>
         );
     }
-});
+}
