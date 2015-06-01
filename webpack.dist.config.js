@@ -57,8 +57,12 @@ var buildConfig = _.assign(getWebpackConfig(), {
     },
 
     externals: {
-        'react': 'React',
-        'react/addons': 'React'
+        react: {
+            root: "React",
+            commonjs: "react",
+            commonjs2: "react",
+            amd: "react"
+        }
     }
 });
 
