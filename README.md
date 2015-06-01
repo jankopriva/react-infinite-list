@@ -9,9 +9,9 @@ list item is scrolled out of the visible area.
 Installation
 ------------
 ```sh
-npm install react-infinite-list --save
+npm install react-infinite-list --save-dev
 # or
-bower install react-infinite-list --save
+bower install react-infinite-list --save-dev
 ```
 
 Usage
@@ -44,7 +44,10 @@ There are also some mandatory css rules:
     }
 ```
 
-See [example.js](example/example.js) for more details.
-
-
-
+Example
+-------
+Clone this repo and run `npm i`. After the dependencies are installed, just issue:
+```
+npm start
+```
+and wait till webpack builds the bundel. Brower shall be opened on port 3000.
