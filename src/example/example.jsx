@@ -22,7 +22,7 @@ const InfiniteListItem = class extends React.Component {
 React.render(
     <InfiniteList
         items={items}
-        height={100}
+        height={150}
         itemHeight={20}
         listItemClass={InfiniteListItem}
     />,
