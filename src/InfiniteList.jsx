@@ -27,7 +27,7 @@ export default class InfiniteList extends React.Component {
     _calculateVisibleItems() {
         var scrolledPx = React.findDOMNode(this).scrollTop;
 
-        var visibleStart = parseInt(scrolledPx / this.props.itemHeight);
+        var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
         if (visibleStart !== this.state.renderedStart) {
             this.setState({ renderedStart: visibleStart });
@@ -35,15 +35,15 @@ export default class InfiniteList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        var itemsChanged = this.props.items.length !== nextProps.items.length,
-            visibleItemsChanged = this.props.numOfVisibleItems !== nextProps.numOfVisibleItems;
+        var itemsChanged  = this.props.items.length !== nextProps.items.length,
+            heightChanged = this.props.height !== nextProps.height;
 
         // scroll to the top when searching
         if (itemsChanged) {
             React.findDOMNode(this).scrollTop = 0;
         }
 
-        if (itemsChanged || visibleItemsChanged) {
+        if (itemsChanged || heightChanged) {
             this._calculateVisibleItems();
         }
     }
@@ -55,17 +55,18 @@ export default class InfiniteList extends React.Component {
 
     render() {
         var { renderedStart } = this.state,
-            { items, itemHeight, numOfVisibleItems } = this.props,
+            { items, height, itemHeight } = this.props,
+            // the number one guarantees there is never empty space at the end of the list
+            numOfVisibleItems = Math.ceil(height / itemHeight) + 1,
             paddingHeight = renderedStart * itemHeight,
-            visibleHeight = numOfVisibleItems * itemHeight,
-            listHeight = items.length * itemHeight;
+            totalHeight = items.length * itemHeight;
 
         var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
         var listItems = visibleItems.map(this._getItemComponent, this);
 
         return (
-            <div className="infinite-list" onScroll={this.onScroll.bind(this)} style={{height: visibleHeight}}>
-                <div className="infinite-list-content" style={{height: listHeight}}>
+            <div className="infinite-list" onScroll={this.onScroll.bind(this)} style={{height: this.props.height}}>
+                <div className="infinite-list-content" style={{height: totalHeight}}>
                     <div className="topitem" style={{ height: paddingHeight }} key="top" />
                     {listItems}
                 </div>
@@ -76,7 +77,6 @@ export default class InfiniteList extends React.Component {
 
 InfiniteList.propTypes = {
     items: React.PropTypes.array.isRequired,
-    itemHeight: React.PropTypes.number.isRequired,
-    numOfVisibleItems: React.PropTypes.number.isRequired,
-    listItemClass: React.PropTypes.element
+    height: React.PropTypes.number.isRequired,
+    itemHeight: React.PropTypes.number.isRequired
 };

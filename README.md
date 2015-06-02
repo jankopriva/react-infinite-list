@@ -20,21 +20,20 @@ Usage
 ```js
  <InfiniteList
         items={items}
-        numOfVisibleItems={5}
+        height={100}
         itemHeight={20}
         listItemClass={InfiniteListItem}
     />,
 ```
 
-`items`, `numOfVisibleItems` and `itemHeight` are mandatory. The latter two controls
-the height of the component.
+`items`, `height` and `itemHeight` are mandatory.
 
 `listItemClass` is optional. Rather, it serves for default list item view overriding.
 
 There are also some mandatory css rules:
 ```css
     .infinite-list {
-        overflow: auto  ;
+        overflow: auto;
         position: relative;
     }
 
