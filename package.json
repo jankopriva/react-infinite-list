@@ -19,6 +19,7 @@
     "email": "jan.kopriva@email.cz",
     "url": "https://github.com/jankopriva/"
   },
+  "license": "MIT",
   "devDependencies": {
     "autoprefixer-loader": "1.1.0",
     "babel": "^5.4.7",
