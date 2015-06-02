@@ -122,7 +122,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            value: function _calculateVisibleItems() {
 	                var scrolledPx = React.findDOMNode(this).scrollTop;
 
-	                var visibleStart = parseInt(scrolledPx / this.props.itemHeight);
+	                var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
 	                if (visibleStart !== this.state.renderedStart) {
 	                    this.setState({ renderedStart: visibleStart });
@@ -132,14 +132,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        componentWillReceiveProps: {
 	            value: function componentWillReceiveProps(nextProps) {
 	                var itemsChanged = this.props.items.length !== nextProps.items.length,
-	                    visibleItemsChanged = this.props.numOfVisibleItems !== nextProps.numOfVisibleItems;
+	                    heightChanged = this.props.height !== nextProps.height;
 
 	                // scroll to the top when searching
 	                if (itemsChanged) {
 	                    React.findDOMNode(this).scrollTop = 0;
 	                }
 
-	                if (itemsChanged || visibleItemsChanged) {
+	                if (itemsChanged || heightChanged) {
 	                    this._calculateVisibleItems();
 	                }
 	            }
@@ -154,22 +154,23 @@ return /******/ (function(modules) { // webpackBootstrap
 	            value: function render() {
 	                var renderedStart = this.state.renderedStart;var _props = this.props;
 	                var items = _props.items;
-	                var itemHeight = _props.itemHeight;
+	                var height = _props.height;
 
-	                var numOfVisibleItems = _props.numOfVisibleItems;
+	                var itemHeight = _props.itemHeight;
+	                // the number one guarantees there is never empty space at the end of the list
+	                var numOfVisibleItems = Math.ceil(height / itemHeight) + 1;
 	                var paddingHeight = renderedStart * itemHeight;
-	                var visibleHeight = numOfVisibleItems * itemHeight;
-	                var listHeight = items.length * itemHeight;
+	                var totalHeight = items.length * itemHeight;
 
 	                var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
 	                var listItems = visibleItems.map(this._getItemComponent, this);
 
 	                return React.createElement(
 	                    "div",
-	                    { className: "infinite-list", onScroll: this.onScroll.bind(this), style: { height: visibleHeight } },
+	                    { className: "infinite-list", onScroll: this.onScroll.bind(this), style: { height: this.props.height } },
 	                    React.createElement(
 	                        "div",
-	                        { className: "infinite-list-content", style: { height: listHeight } },
+	                        { className: "infinite-list-content", style: { height: totalHeight } },
 	                        React.createElement("div", { className: "topitem", style: { height: paddingHeight }, key: "top" }),
 	                        listItems
 	                    )
@@ -185,8 +186,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	InfiniteList.propTypes = {
 	    items: React.PropTypes.array.isRequired,
-	    itemHeight: React.PropTypes.number.isRequired,
-	    numOfVisibleItems: React.PropTypes.number.isRequired
+	    height: React.PropTypes.number.isRequired,
+	    itemHeight: React.PropTypes.number.isRequired
 	};
 
 /***/ },
