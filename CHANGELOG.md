@@ -1,3 +1,7 @@
+## v0.2.1 (2015-06-03)
+
+Added MIT license and repository config to package.json. Thanks cesarandreu!
+
 ## v0.2.0 (2015-06-02)
 
 `numOfVisibleItems` parameter was removed in favor of `height`. See README.md and `example.jsx`

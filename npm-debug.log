@@ -1,0 +1,137 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@2.11.0
+3 info using node@v0.10.38
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec { raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/Users/jk/Code/js/react-infinite-list',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /Users/jk/.npm/react-infinite-list/0.2.0/package.tgz not in flight; packing
+9 verbose tar pack [ '/Users/jk/.npm/react-infinite-list/0.2.0/package.tgz',
+9 verbose tar pack   '/Users/jk/Code/js/react-infinite-list' ]
+10 verbose tarball /Users/jk/.npm/react-infinite-list/0.2.0/package.tgz
+11 verbose folder /Users/jk/Code/js/react-infinite-list
+12 info prepublish react-infinite-list@0.2.0
+13 verbose unsafe-perm in lifecycle true
+14 verbose addLocalTarball adding from inside cache /Users/jk/.npm/react-infinite-list/0.2.0/package.tgz
+15 silly cache afterAdd react-infinite-list@0.2.0
+16 verbose afterAdd /Users/jk/.npm/react-infinite-list/0.2.0/package/package.json not in flight; writing
+17 verbose afterAdd /Users/jk/.npm/react-infinite-list/0.2.0/package/package.json written
+18 silly publish { name: 'react-infinite-list',
+18 silly publish   version: '0.2.0',
+18 silly publish   description: 'React Infinite List ==============',
+18 silly publish   main: 'lib/react-infinite-list.js',
+18 silly publish   scripts:
+18 silly publish    { 'dist-clean': 'rm -rf dist',
+18 silly publish      'lib-clean': 'rm -rf lib',
+18 silly publish      start: 'npm run dev',
+18 silly publish      dev: 'open http://localhost:3000/ && ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --config webpack.dev.config.js --hot --port 3000 --progress --colors',
+18 silly publish      dist: './node_modules/webpack/bin/webpack.js --config webpack.dist.config.js --progress',
+18 silly publish      'min-dist': 'NODE_ENV=production ./node_modules/webpack/bin/webpack.js --config webpack.dist.config.js --progress',
+18 silly publish      'web-build': 'npm run dist-clean && npm run dist && npm run min-dist',
+18 silly publish      'npm-dist': 'npm run lib-clean && mkdir -p lib && ./node_modules/.bin/babel src/InfiniteList.jsx -o lib/react-infinite-list.js',
+18 silly publish      prepublish: 'npm run npm-dist' },
+18 silly publish   author:
+18 silly publish    { name: 'Jan Kopriva',
+18 silly publish      email: 'jan.kopriva@email.cz',
+18 silly publish      url: 'https://github.com/jankopriva/' },
+18 silly publish   license: 'MIT',
+18 silly publish   repository:
+18 silly publish    { type: 'git',
+18 silly publish      url: 'git+https://github.com/jankopriva/react-infinite-list.git' },
+18 silly publish   devDependencies:
+18 silly publish    { 'autoprefixer-loader': '1.1.0',
+18 silly publish      babel: '^5.4.7',
+18 silly publish      'babel-core': '^4.7.0',
+18 silly publish      'babel-loader': '^4.2.0',
+18 silly publish      'babel-runtime': '^4.6.0',
+18 silly publish      browserslist: '0.2.0',
+18 silly publish      'caniuse-db': '1.0.30000060',
+18 silly publish      chai: '^2.1.1',
+18 silly publish      'css-loader': '0.9.1',
+18 silly publish      'file-loader': '0.8.1',
+18 silly publish      'html-webpack-plugin': '1.1.0',
+18 silly publish      json5: '0.4.0',
+18 silly publish      karma: '^0.12.31',
+18 silly publish      'karma-chai': '^0.1.0',
+18 silly publish      'karma-chrome-launcher': '^0.1.7',
+18 silly publish      'karma-mocha': '^0.1.10',
+18 silly publish      'karma-mocha-reporter': '^1.0.0',
+18 silly publish      'karma-sourcemap-loader': '^0.3.4',
+18 silly publish      'karma-webpack': '^1.5.0',
+18 silly publish      lodash: '3.0.1',
+18 silly publish      mocha: '^2.1.0',
+18 silly publish      nib: '1.0.4',
+18 silly publish      num2fraction: '1.0.1',
+18 silly publish      postcss: '4.0.3',
+18 silly publish      'react-hot-loader': '1.1.4',
+18 silly publish      'sass-loader': '^0.4.1',
+18 silly publish      sinon: '^1.13.0',
+18 silly publish      'sinon-chai': '^2.7.0',
+18 silly publish      'style-loader': '0.8.3',
+18 silly publish      'url-loader': '0.5.5',
+18 silly publish      webpack: '1.5.3',
+18 silly publish      'webpack-dev-server': '1.7.0' },
+18 silly publish   dependencies: { react: '^0.13.2' },
+18 silly publish   readme: 'React Infinite List\n==============\n\nA component that displays large list of data efficiently. Reuses DOM elements during scrolling.\nIt uses different rendering approach than [https://github.com/Morhaus/react-list-view] or Ember ListView.\nInstead of transposing the item rows, it just re-renders the component whenever the top or bottom\nlist item is scrolled out of the visible area.\n\nInstallation\n------------\n```sh\nnpm install react-infinite-list --save-dev\n# or\nbower install react-infinite-list --save-dev\n```\n\nUsage\n-----\n\n```js\n <InfiniteList\n        items={items}\n        height={100}\n        itemHeight={20}\n        listItemClass={InfiniteListItem}\n    />,\n```\n\n`items`, `height` and `itemHeight` are mandatory.\n\n`listItemClass` is optional. Rather, it serves for default list item view overriding.\n\nThere are also some mandatory css rules:\n```css\n    .infinite-list {\n        overflow: auto;\n        position: relative;\n    }\n\n    .infinite-list-content {\n        margin: 0;\n        position: absolute;\n    }\n```\n\nExample\n-------\nClone this repo and run `npm i`. After the dependencies are installed, just issue:\n```\nnpm start\n```\nand wait till webpack builds the bundel. Brower shall be opened on port 3000.\n',
+18 silly publish   readmeFilename: 'README.md',
+18 silly publish   gitHead: '6784a743bd060837da626637aaae8e177c6b180e',
+18 silly publish   bugs: { url: 'https://github.com/jankopriva/react-infinite-list/issues' },
+18 silly publish   homepage: 'https://github.com/jankopriva/react-infinite-list#readme',
+18 silly publish   _id: 'react-infinite-list@0.2.0',
+18 silly publish   _shasum: '889b25cd168a68cf4af5f8cfb51837435f4c328e',
+18 silly publish   _from: '.' }
+19 verbose getPublishConfig undefined
+20 silly mapToRegistry name react-infinite-list
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/react-infinite-list
+24 verbose publish registryBase https://registry.npmjs.org/
+25 silly publish uploading /Users/jk/.npm/react-infinite-list/0.2.0/package.tgz
+26 verbose request uri https://registry.npmjs.org/react-infinite-list
+27 verbose request sending authorization for write operation
+28 info attempt registry request try #1 at 09:15:38
+29 verbose request id 1e535da2d5798b8b
+30 http request PUT https://registry.npmjs.org/react-infinite-list
+31 http 403 https://registry.npmjs.org/react-infinite-list
+32 verbose headers { 'content-type': 'application/json',
+32 verbose headers   'cache-control': 'max-age=60',
+32 verbose headers   'content-length': '95',
+32 verbose headers   'accept-ranges': 'bytes',
+32 verbose headers   date: 'Wed, 03 Jun 2015 07:15:38 GMT',
+32 verbose headers   via: '1.1 varnish',
+32 verbose headers   connection: 'keep-alive',
+32 verbose headers   'x-served-by': 'cache-fra1246-FRA',
+32 verbose headers   'x-cache': 'MISS',
+32 verbose headers   'x-cache-hits': '0',
+32 verbose headers   'x-timer': 'S1433315738.463751,VS0,VE435' }
+33 verbose request invalidating /Users/jk/.npm/registry.npmjs.org/react-infinite-list on PUT
+34 error publish Failed PUT 403
+35 verbose stack Error: "You cannot publish over the previously published version 0.2.0." : react-infinite-list
+35 verbose stack     at CachingRegistryClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:247:14)
+35 verbose stack     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:170:14)
+35 verbose stack     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:368:22)
+35 verbose stack     at Request.emit (events.js:98:17)
+35 verbose stack     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1219:14)
+35 verbose stack     at Request.emit (events.js:117:20)
+35 verbose stack     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1167:12)
+35 verbose stack     at IncomingMessage.emit (events.js:117:20)
+35 verbose stack     at _stream_readable.js:944:16
+35 verbose stack     at process._tickCallback (node.js:448:13)
+36 verbose statusCode 403
+37 verbose pkgid react-infinite-list
+38 verbose cwd /Users/jk/Code/js/react-infinite-list
+39 error Darwin 14.3.0
+40 error argv "node" "/usr/local/bin/npm" "publish"
+41 error node v0.10.38
+42 error npm  v2.11.0
+43 error code E403
+44 error "You cannot publish over the previously published version 0.2.0." : react-infinite-list
+45 error If you need help, you may report this error at:
+45 error     <https://github.com/npm/npm/issues>
+46 verbose exit [ 1, true ]
