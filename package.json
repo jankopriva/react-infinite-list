@@ -20,6 +20,10 @@
     "url": "https://github.com/jankopriva/"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jankopriva/react-infinite-list.git"
+  },
   "devDependencies": {
     "autoprefixer-loader": "1.1.0",
     "babel": "^5.4.7",
