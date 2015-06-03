@@ -25,6 +25,7 @@
     ".npmignore",
     "bower.json",
     ".bowerrc",
+    "LICENSE",
     "README.md",
     "webpack.*"
   ],
