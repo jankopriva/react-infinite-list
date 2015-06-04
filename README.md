@@ -49,3 +49,10 @@ Clone this repo and run `npm i`. After the dependencies are installed, just issu
 npm start
 ```
 and wait till webpack builds the bundle. Browser shall be opened on port 3000.
+
+
+Build
+-------
+```
+npm run web-build
+```

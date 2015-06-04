@@ -13,14 +13,41 @@ InfiniteListItem.propTypes = {
     title:  React.PropTypes.string.isRequired
 };
 
+var isWebkit = /WebKit/.test(navigator && navigator.userAgent || '');
+
+function isHighDensity() {
+    return ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
+}
+
 export default class InfiniteList extends React.Component {
     constructor(props) {
         super(props);
 
+        this._scrollTimer = null;
         this.state = { renderedStart: 0 };
     }
 
-    onScroll() {
+    onWheel() {
+        this._scrolledByWheel = true;
+    }
+
+    onScroll(e) {
+        e.stopPropagation();
+
+        // webkit when scrolling by wheel
+        if (isWebkit && this._scrolledByWheel && !isHighDensity()) {
+            this._scrolledByWheel = false;
+
+            if (!this._scrollTimer) {
+                this._scrollTimer = setTimeout(function() {
+                    this._scrollTimer = null;
+                    this._calculateVisibleItems();
+                }.bind(this), 150);
+            }
+
+            return;
+        }
+
         this._calculateVisibleItems();
     }
 
@@ -63,13 +90,17 @@ export default class InfiniteList extends React.Component {
         var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
         var listItems = visibleItems.map(this._getItemComponent, this);
 
-        var paddingTop = this.state.renderedStart * itemHeight;
+        var padding = this.state.renderedStart * itemHeight;
         var maxPadding = totalHeight - (numOfVisibleItems * itemHeight) + itemHeight;
-        padding = Math.min(maxPadding, paddingTop);
+        var paddingTop = Math.min(maxPadding, padding);
 
         return (
-            <div className="infinite-list" onScroll={this.onScroll.bind(this)} style={{height: this.props.height}}>
-                <div className="infinite-list-content" style={{height: totalHeight - padding, paddingTop: padding}}>
+            <div className="infinite-list"
+                 onWheel={this.onWheel.bind(this)}
+                 onScroll={this.onScroll.bind(this)}
+                 style={{height: this.props.height}}>
+
+                <div className="infinite-list-content" style={{height: totalHeight - paddingTop, paddingTop: paddingTop}}>
                     {listItems}
                 </div>
             </div>
