@@ -4,7 +4,7 @@ var InfiniteList = require('../InfiniteList.jsx');
 require('./styles/app.scss');
 
 var items = [];
-for (var i = 0; i < 50; i++) {
+for (var i = 0; i < 500; i++) {
     items.push({
         id: i,
         title: 'item #' + i
@@ -14,7 +14,7 @@ for (var i = 0; i < 50; i++) {
 const InfiniteListItem = class extends React.Component {
     render() {
         return (
-            <div className="infinite-list-item" style={{height: this.props.height}}>{this.props.title}</div>
+            <div className="infinite-list-item" style={this.props.style}>{this.props.title}</div>
         );
     }
 };
