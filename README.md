@@ -48,4 +48,4 @@ Clone this repo and run `npm i`. After the dependencies are installed, just issu
 ```
 npm start
 ```
-and wait till webpack builds the bundel. Brower shall be opened on port 3000.
+and wait till webpack builds the bundle. Browser shall be opened on port 3000.
