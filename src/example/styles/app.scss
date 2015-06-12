@@ -1,11 +1,16 @@
 .infinite-list {
-    overflow: auto  ;
+    overflow: auto;
     width: 100px;
     background: bisque;
     position: relative;
+    -webkit-overflow-scrolling: touch;
 }
 
 .infinite-list-content {
     margin: 0;
     position: absolute;
+}
+
+.infinite-list-item {
+    height: 20px;
 }

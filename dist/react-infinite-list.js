@@ -86,7 +86,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            value: function render() {
 	                return React.createElement(
 	                    "div",
-	                    { className: "infinite-list-item", style: { height: this.props.height } },
+	                    { className: "infinite-list-item" },
 	                    this.props.title
 	                );
 	            }
@@ -147,7 +147,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _getItemComponent: {
 	            value: function _getItemComponent(item) {
 	                var ListItemComponent = this.props.listItemClass || InfiniteListItem;
-	                return React.createElement(ListItemComponent, _extends({ key: item.id }, item, { height: this.props.itemHeight }));
+	                return React.createElement(ListItemComponent, _extends({ key: item.id }, item));
 	            }
 	        },
 	        render: {
@@ -159,19 +159,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var itemHeight = _props.itemHeight;
 	                // the number one guarantees there is never empty space at the end of the list
 	                var numOfVisibleItems = Math.ceil(height / itemHeight) + 1;
-	                var paddingHeight = renderedStart * itemHeight;
 	                var totalHeight = items.length * itemHeight;
 
 	                var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
 	                var listItems = visibleItems.map(this._getItemComponent, this);
+
+	                var paddingTop = this.state.renderedStart * itemHeight;
+	                var maxPadding = totalHeight - numOfVisibleItems * itemHeight + itemHeight;
+	                padding = Math.min(maxPadding, paddingTop);
 
 	                return React.createElement(
 	                    "div",
 	                    { className: "infinite-list", onScroll: this.onScroll.bind(this), style: { height: this.props.height } },
 	                    React.createElement(
 	                        "div",
-	                        { className: "infinite-list-content", style: { height: totalHeight } },
-	                        React.createElement("div", { className: "topitem", style: { height: paddingHeight }, key: "top" }),
+	                        { className: "infinite-list-content", style: { height: totalHeight - padding, paddingTop: padding } },
 	                        listItems
 	                    )
 	                );
