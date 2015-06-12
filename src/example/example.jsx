@@ -14,7 +14,7 @@ for (var i = 0; i < 500; i++) {
 const InfiniteListItem = class extends React.Component {
     render() {
         return (
-            <div className="infinite-list-item" style={this.props.style}>{this.props.title}</div>
+            <div className="infinite-list-item">{this.props.title}</div>
         );
     }
 };

@@ -1,3 +1,14 @@
+## v0.2.2 (2015-06-12)
+
+Improved scrolling behavior with webkit. Sometimes, when using some point or touch devices
+whole page was scrolled to the bottom, even though the scroll event was emit from the list
+view.
+
+Removed unecessary topItem in favor of padding of the first item. Also, styles need not to
+be passed down to the list item view.
+
+Thanks crudo!
+
 ## v0.2.1 (2015-06-03)
 
 Added MIT license and repository config to package.json. Thanks cesarandreu!
