@@ -8,9 +8,9 @@ list item is scrolled out of the visible area.
 Installation
 ------------
 ```sh
-npm install react-infinite-list --save-dev
+npm install react-infinite-list --save
 # or
-bower install react-infinite-list --save-dev
+bower install react-infinite-list --save
 ```
 
 Usage
