@@ -1,3 +1,10 @@
+## v0.2.3 (2015-06-30)
+
+Moved list item to the separate file.
+CSS classes can be passed as property.
+
+Thanks michalweiser!
+
 ## v0.2.2 (2015-06-12)
 
 Improved scrolling behavior with webkit. Sometimes, when using some point or touch devices
