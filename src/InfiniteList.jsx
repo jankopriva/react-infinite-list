@@ -1,18 +1,10 @@
-import React from 'react';
+import {
+    findDOMNode,
+    PropTypes,
+    Component
+} from 'react';
 import classnames from 'classnames';
-
-class InfiniteListItem extends React.Component {
-    render() {
-        return (
-            <div className="infinite-list-item">{this.props.title}</div>
-        );
-    }
-}
-
-InfiniteListItem.propTypes = {
-    height: React.PropTypes.number.isRequired,
-    title:  React.PropTypes.string.isRequired
-};
+import InfiniteListItem from './InfiniteListItem';
 
 var isWebkit = /WebKit/.test(navigator && navigator.userAgent || '');
 
@@ -20,7 +12,7 @@ function isHighDensity() {
     return ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 }
 
-export default class InfiniteList extends React.Component {
+export default class InfiniteList extends Component {
     constructor(props) {
         super(props);
 
@@ -53,7 +45,7 @@ export default class InfiniteList extends React.Component {
     }
 
     _calculateVisibleItems() {
-        var scrolledPx = React.findDOMNode(this).scrollTop;
+        var scrolledPx = findDOMNode(this).scrollTop;
 
         var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
@@ -68,7 +60,7 @@ export default class InfiniteList extends React.Component {
 
         // scroll to the top when searching
         if (itemsChanged) {
-            React.findDOMNode(this).scrollTop = 0;
+            findDOMNode(this).scrollTop = 0;
         }
 
         if (itemsChanged || heightChanged) {
@@ -117,7 +109,7 @@ export default class InfiniteList extends React.Component {
 }
 
 InfiniteList.propTypes = {
-    items: React.PropTypes.array.isRequired,
-    height: React.PropTypes.number.isRequired,
-    itemHeight: React.PropTypes.number.isRequired
+    items: PropTypes.array.isRequired,
+    height: PropTypes.number.isRequired,
+    itemHeight: PropTypes.number.isRequired
 };
