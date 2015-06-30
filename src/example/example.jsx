@@ -21,6 +21,7 @@ const InfiniteListItem = class extends React.Component {
 
 React.render(
     <InfiniteList
+        className="custom-list-class"
         items={items}
         height={150}
         itemHeight={20}
@@ -28,4 +29,3 @@ React.render(
     />,
     document.getElementById('app')
 );
-

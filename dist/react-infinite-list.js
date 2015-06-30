@@ -70,6 +70,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var React = _interopRequire(__webpack_require__(1));
 
+	var classnames = _interopRequire(__webpack_require__(2));
+
 	var InfiniteListItem = (function (_React$Component) {
 	    function InfiniteListItem() {
 	        _classCallCheck(this, InfiniteListItem);
@@ -178,6 +180,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	                return React.createElement(ListItemComponent, _extends({ key: item.id }, item));
 	            }
 	        },
+	        _getClassnames: {
+	            value: function _getClassnames() {
+	                return classnames("infinite-list", this.props.className);
+	            }
+	        },
 	        render: {
 	            value: function render() {
 	                var renderedStart = this.state.renderedStart;var _props = this.props;
@@ -198,7 +205,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                return React.createElement(
 	                    "div",
-	                    { className: "infinite-list",
+	                    { className: this._getClassnames(),
 	                        onWheel: this.onWheel.bind(this),
 	                        onScroll: this.onScroll.bind(this),
 	                        style: { height: this.props.height } },
@@ -228,6 +235,61 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2015 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+
+	(function () {
+		'use strict';
+
+		function classNames () {
+
+			var classes = '';
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if ('string' === argType || 'number' === argType) {
+					classes += ' ' + arg;
+
+				} else if (Array.isArray(arg)) {
+					classes += ' ' + classNames.apply(null, arg);
+
+				} else if ('object' === argType) {
+					for (var key in arg) {
+						if (arg.hasOwnProperty(key) && arg[key]) {
+							classes += ' ' + key;
+						}
+					}
+				}
+			}
+
+			return classes.substr(1);
+		}
+
+		if (true) {
+			// AMD. Register as an anonymous module.
+			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else {
+			window.classNames = classNames;
+		}
+
+	}());
+
 
 /***/ }
 /******/ ])

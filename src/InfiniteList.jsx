@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 class InfiniteListItem extends React.Component {
     render() {
@@ -80,6 +81,13 @@ export default class InfiniteList extends React.Component {
         return <ListItemComponent key={item.id} {...item} />;
     }
 
+    _getClassNames() {
+        return classnames(
+            'infinite-list',
+            this.props.className
+        );
+    }
+
     render() {
         var { renderedStart } = this.state,
             { items, height, itemHeight } = this.props,
@@ -95,7 +103,7 @@ export default class InfiniteList extends React.Component {
         var paddingTop = Math.min(maxPadding, padding);
 
         return (
-            <div className="infinite-list"
+            <div className={this._getClassNames()}
                  onWheel={this.onWheel.bind(this)}
                  onScroll={this.onScroll.bind(this)}
                  style={{height: this.props.height}}>

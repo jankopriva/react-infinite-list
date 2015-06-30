@@ -33,6 +33,7 @@
     "browserslist": "0.2.0",
     "caniuse-db": "1.0.30000060",
     "chai": "^2.1.1",
+    "classnames": "^2.1.2",
     "css-loader": "0.9.1",
     "file-loader": "0.8.1",
     "html-webpack-plugin": "1.1.0",
