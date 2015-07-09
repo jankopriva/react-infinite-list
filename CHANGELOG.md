@@ -1,8 +1,11 @@
+## v0.2.5 (2015-07-9)
+Fixed library build. Removed item from module to main file, due to the babel transpile issues.
+
 ## v0.2.4 (2015-07-9)
 Fixed maximum padding problem.
 Thanks voy!
 
-Fixed library build. Removed item from module to main file, due to the babel transpile issues.
+This release is broken due to changes in v0.2.3. Please discard
 
 ## v0.2.3 (2015-06-30)
 
