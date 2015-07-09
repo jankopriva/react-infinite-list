@@ -91,7 +91,8 @@ export default class InfiniteList extends Component {
         var listItems = visibleItems.map(this._getItemComponent, this);
 
         var padding = this.state.renderedStart * itemHeight;
-        var maxPadding = totalHeight - (numOfVisibleItems * itemHeight) + itemHeight;
+        // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
+        var maxPadding = Math.max(0, totalHeight - (numOfVisibleItems * itemHeight) + itemHeight);
         var paddingTop = Math.min(maxPadding, padding);
 
         return (
