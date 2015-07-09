@@ -175,7 +175,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var listItems = visibleItems.map(this._getItemComponent, this);
 
 	                var padding = this.state.renderedStart * itemHeight;
-	                var maxPadding = totalHeight - numOfVisibleItems * itemHeight + itemHeight;
+	                // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
+	                var maxPadding = Math.max(0, totalHeight - numOfVisibleItems * itemHeight + itemHeight);
 	                var paddingTop = Math.min(maxPadding, padding);
 
 	                return React.createElement(
@@ -304,13 +305,13 @@ return /******/ (function(modules) { // webpackBootstrap
 			return classes.substr(1);
 		}
 
-		if (true) {
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true){
 			// AMD. Register as an anonymous module.
 			!(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
 				return classNames;
 			}.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-		} else if (typeof module !== 'undefined' && module.exports) {
-			module.exports = classNames;
 		} else {
 			window.classNames = classNames;
 		}

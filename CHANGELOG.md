@@ -1,3 +1,8 @@
+## v0.2.4 (2015-07-9)
+Fixed maximum padding problem
+
+Thanks voy!
+
 ## v0.2.3 (2015-06-30)
 
 Moved list item to the separate file.
