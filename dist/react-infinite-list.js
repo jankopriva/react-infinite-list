@@ -54,13 +54,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(React) {"use strict";
+	"use strict";
 
 	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
 
-	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
 	var _get = function get(object, property, receiver) { var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc && desc.writable) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
 	var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
 
@@ -68,15 +68,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _react = __webpack_require__(1);
+	var React = _interopRequire(__webpack_require__(1));
 
-	var findDOMNode = _react.findDOMNode;
-	var PropTypes = _react.PropTypes;
-	var Component = _react.Component;
-
-	var classnames = _interopRequire(__webpack_require__(3));
-
-	var InfiniteListItem = _interopRequire(__webpack_require__(2));
+	var classnames = _interopRequire(__webpack_require__(2));
 
 	var isWebkit = /WebKit/.test(navigator && navigator.userAgent || "");
 
@@ -84,7 +78,38 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return window.matchMedia && (window.matchMedia("only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)").matches || window.matchMedia("only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)").matches) || window.devicePixelRatio && window.devicePixelRatio > 1.3;
 	}
 
-	var InfiniteList = (function (_Component) {
+	var InfiniteListItem = (function (_React$Component) {
+	    function InfiniteListItem() {
+	        _classCallCheck(this, InfiniteListItem);
+
+	        if (_React$Component != null) {
+	            _React$Component.apply(this, arguments);
+	        }
+	    }
+
+	    _inherits(InfiniteListItem, _React$Component);
+
+	    _createClass(InfiniteListItem, {
+	        render: {
+	            value: function render() {
+	                return React.createElement(
+	                    "div",
+	                    { key: this.props.id, className: "infinite-list-item" },
+	                    this.props.title
+	                );
+	            }
+	        }
+	    });
+
+	    return InfiniteListItem;
+	})(React.Component);
+
+	InfiniteListItem.propTypes = {
+	    title: React.PropTypes.string.isRequired,
+	    id: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired
+	};
+
+	var InfiniteList = (function (_React$Component2) {
 	    function InfiniteList(props) {
 	        _classCallCheck(this, InfiniteList);
 
@@ -94,7 +119,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.state = { renderedStart: 0 };
 	    }
 
-	    _inherits(InfiniteList, _Component);
+	    _inherits(InfiniteList, _React$Component2);
 
 	    _createClass(InfiniteList, {
 	        onWheel: {
@@ -125,7 +150,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        _calculateVisibleItems: {
 	            value: function _calculateVisibleItems() {
-	                var scrolledPx = findDOMNode(this).scrollTop;
+	                var scrolledPx = React.findDOMNode(this).scrollTop;
 
 	                var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
@@ -141,7 +166,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                // scroll to the top when searching
 	                if (itemsChanged) {
-	                    findDOMNode(this).scrollTop = 0;
+	                    React.findDOMNode(this).scrollTop = 0;
 	                }
 
 	                if (itemsChanged || heightChanged) {
@@ -196,16 +221,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 
 	    return InfiniteList;
-	})(Component);
+	})(React.Component);
 
 	module.exports = InfiniteList;
 
 	InfiniteList.propTypes = {
-	    items: PropTypes.array.isRequired,
-	    height: PropTypes.number.isRequired,
-	    itemHeight: PropTypes.number.isRequired
+	    items: React.PropTypes.array.isRequired,
+	    height: React.PropTypes.number.isRequired,
+	    itemHeight: React.PropTypes.number.isRequired
 	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ },
 /* 1 */
@@ -215,57 +239,6 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(React) {"use strict";
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var key in props) { var prop = props[key]; prop.configurable = true; if (prop.value) prop.writable = true; } Object.defineProperties(target, props); } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _inherits = function (subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; };
-
-	var _classCallCheck = function (instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } };
-
-	var _react = __webpack_require__(1);
-
-	var PropTypes = _react.PropTypes;
-	var Component = _react.Component;
-
-	var InfiniteListItem = (function (_Component) {
-	    function InfiniteListItem() {
-	        _classCallCheck(this, InfiniteListItem);
-
-	        if (_Component != null) {
-	            _Component.apply(this, arguments);
-	        }
-	    }
-
-	    _inherits(InfiniteListItem, _Component);
-
-	    _createClass(InfiniteListItem, {
-	        render: {
-	            value: function render() {
-	                return React.createElement(
-	                    "div",
-	                    { key: this.props.id, className: "infinite-list-item" },
-	                    this.props.title
-	                );
-	            }
-	        }
-	    });
-
-	    return InfiniteListItem;
-	})(Component);
-
-	module.exports = InfiniteListItem;
-
-	InfiniteListItem.propTypes = {
-	    title: PropTypes.string.isRequired,
-	    id: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired
-	};
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
-
-/***/ },
-/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!

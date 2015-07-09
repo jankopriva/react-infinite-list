@@ -1,6 +1,5 @@
 import React from 'react';
 import InfiniteList from '../InfiniteList';
-import InfiniteListItem from '../InfiniteListItem';
 
 require('./styles/app.scss');
 
@@ -10,6 +9,16 @@ for (var i = 0; i < 500; i++) {
         id: i,
         title: 'item #' + i
     });
+}
+
+class InfiniteListItem extends React.Component {
+    render() {
+        return (
+            <div key={this.props.id} className="infinite-list-item">
+                {this.props.title}
+            </div>
+        );
+    }
 }
 
 React.render(

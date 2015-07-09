@@ -1,10 +1,6 @@
-import {
-    findDOMNode,
-    PropTypes,
-    Component
-} from 'react';
+import React from 'react';
+
 import classnames from 'classnames';
-import InfiniteListItem from './InfiniteListItem';
 
 var isWebkit = /WebKit/.test(navigator && navigator.userAgent || '');
 
@@ -12,7 +8,25 @@ function isHighDensity() {
     return ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 }
 
-export default class InfiniteList extends Component {
+class InfiniteListItem extends React.Component {
+    render() {
+        return (
+            <div key={this.props.id} className="infinite-list-item">
+                {this.props.title}
+            </div>
+        );
+    }
+}
+
+InfiniteListItem.propTypes = {
+    title: React.PropTypes.string.isRequired,
+    id: React.PropTypes.oneOfType([
+            React.PropTypes.number,
+            React.PropTypes.string
+        ]).isRequired
+};
+
+export default class InfiniteList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -45,7 +59,7 @@ export default class InfiniteList extends Component {
     }
 
     _calculateVisibleItems() {
-        var scrolledPx = findDOMNode(this).scrollTop;
+        var scrolledPx = React.findDOMNode(this).scrollTop;
 
         var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
@@ -60,7 +74,7 @@ export default class InfiniteList extends Component {
 
         // scroll to the top when searching
         if (itemsChanged) {
-            findDOMNode(this).scrollTop = 0;
+            React.findDOMNode(this).scrollTop = 0;
         }
 
         if (itemsChanged || heightChanged) {
@@ -110,7 +124,7 @@ export default class InfiniteList extends Component {
 }
 
 InfiniteList.propTypes = {
-    items: PropTypes.array.isRequired,
-    height: PropTypes.number.isRequired,
-    itemHeight: PropTypes.number.isRequired
+    items: React.PropTypes.array.isRequired,
+    height: React.PropTypes.number.isRequired,
+    itemHeight: React.PropTypes.number.isRequired
 };
