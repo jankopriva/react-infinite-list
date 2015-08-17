@@ -60,6 +60,7 @@
     "webpack-dev-server": "1.7.0"
   },
   "dependencies": {
-    "react": "^0.13.2"
+    "lodash": "^3.10.1",
+    "react": "^0.13.3"
   }
 }
