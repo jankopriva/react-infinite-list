@@ -5,7 +5,7 @@ import _ from 'lodash';
 import './styles/app.scss';
 
 const PAGE_SIZE = 20;
-const TOTAL_COUNT = 1000;
+const TOTAL_COUNT = 10000;
 
 const items = _.times(TOTAL_COUNT, (id) => ({ id }));
 
@@ -19,11 +19,9 @@ function isFetchNeeded(start, end) {
    return _.any(items.slice(start, end), isItemEmpty);
 }
 
-function getPage(end) {
-    return parseInt(end / PAGE_SIZE, 10);
-}
+// Page cache. We got first page loaded.
+let loadedPages = {0: true};
 
-let loadedPages = {};
 function isPageLoaded(page) {
     if (!loadedPages[page]) {
         loadedPages[page] = true;
@@ -34,34 +32,59 @@ function isPageLoaded(page) {
     return true;
 }
 
-function fetchData(start, end) {
+function cachePage(page) {
+    loadedPages[page] = true;
+}
+
+// We count pages from 0
+function getPage(index) {
+    return parseInt(index / PAGE_SIZE, 10);
+}
+
+function isDataAlreadyLoaded(pages) {
+    return isPageLoaded(pages[0] && isPageLoaded(pages[1]));
+}
+
+function getPages(start, end) {
+    const startIndexPage = getPage(start);
+    const endIndexPage = getPage(end);
+
+    return [startIndexPage, endIndexPage];
+}
+
+function getOffset(page) {
+    return page * PAGE_SIZE;
+}
+
+function getCount(page) {
+    // Pages are counted from 0
+    const lastPage = parseInt(items.length / PAGE_SIZE, 10) - 1;
+    const lastPageItemsCount = items.length % PAGE_SIZE;
+
+    // Determine whether last page item count is lesser than PAGE_SIZE
+    return (lastPage === page && lastPageItemsCount) ? lastPageItemsCount : PAGE_SIZE;
+}
+
+function setItems(offset, count) {
+    for (i = offset; i < offset + count; i++) {
+        items[i].title = 'item #' + i;
+    }
+}
+
+function fetchData(page) {
+    const offset = getOffset(page);
+    const count = getCount(page);
+
     return new Promise((resolve, reject) => {
-        if (!isFetchNeeded(start, end)) {
-            return reject('No new data needed');
-        }
-
-        const page = getPage(end);
-
-        if (isPageLoaded(page)) {
-            return reject(`Page ${page} already loaded.`);
-        }
-
-        setTimeout(() => {
-            const startIndex = page * PAGE_SIZE;
-            const endIndex = Math.min(startIndex + PAGE_SIZE, items.length);
-
-            for (let i = startIndex; i < endIndex; i++) {
-                items[i] = {
-                    id: i,
-                    title: 'item #' + i
-                };
+        setTimeout(()=> {
+            const response = {
+                page: page,
+                items: setItems(offset, count)
             }
-
-            resolve(items);
+            resolve(response);
         }, 100);
     });
 }
-
 
 class InfiniteListExample extends React.Component {
     constructor(props) {
@@ -69,9 +92,26 @@ class InfiniteListExample extends React.Component {
     }
 
     onRangeChange(start, end) {
-        fetchData(start, end)
-            .then((items) => this.setState({ items }))
-            .catch((message) => console.log(message));
+        let pages = getPages(start, end);
+
+        pages = _.uniq(pages);
+        const requests = pages.map((page) => {
+            if (!isPageLoaded(page)) {
+                return fetchData(page)
+            }
+
+            return true;
+        }).filter((request) => request !== true);
+
+        if (requests.length) {
+            Promise.all(requests).then((responses) => {
+                responses.forEach((response) => {
+                    cachePage(response.page);
+                });
+
+                this.setState(items);
+            });
+        }
     }
 
     render() {
@@ -82,7 +122,6 @@ class InfiniteListExample extends React.Component {
             itemHeight={20}
             listItemClass={InfiniteListItem}
             onRangeChange={this.onRangeChange.bind(this)}
-            firstVisibleItemIndex={0}
             isItemEmpty={isItemEmpty}
         />;
     }

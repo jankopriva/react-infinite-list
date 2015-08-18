@@ -125,9 +125,13 @@ export default class InfiniteList extends React.Component {
     _notifyWhenDataIsNeeded(start, end) {
         console.log('will notify for: ', start, end);
         const items = this.state.items;
+
+        // Do not go over the end of the array
+        if (end >= items.length ) end = items.length - 1;
+
         const isItemEmpty = this.props.isItemEmpty;
 
-        if (_.any(items.slice(start, end), isItemEmpty)) {
+        if (_.any(items.slice(start, end + 1), isItemEmpty)) {
             this.props.onRangeChange(start, end);
         }
     }
