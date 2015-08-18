@@ -2,67 +2,31 @@ import React from 'react';
 import InfiniteList from '../InfiniteList';
 import _ from 'lodash';
 
-require('./styles/app.scss');
+import './styles/app.scss';
 
 const PAGE_SIZE = 20;
-const TOTAT_COUNT = 1000;
+const TOTAL_COUNT = 1000;
 
-var items = [];
+const items = _.times(TOTAL_COUNT, (id) => ({ id }));
 
-for (var i = 0; i < 20; i++) {
-    items.push({
-        id: i,
-        title: 'item #' + i
-    });
-}
-for (var i = 20; i < 1000; i++) {
-    items.push({id: i});
-}
+_.take(items, PAGE_SIZE).forEach((item, index) => {
+    item.title = `item #${index}`;
+});
+
+const isItemEmpty = (item) => _.isEmpty(item.title);
 
 function isFetchNeeded(start, end) {
-   return _.some(items.slice(start, end), isItemEmpty);
+   return _.any(items.slice(start, end), isItemEmpty);
 }
 
-function calculatePage(end) {
+function getPage(end) {
     return parseInt(end / PAGE_SIZE, 10);
 }
 
-// TODO: calculate page
-function fetchData(start, end, callback) {
-    console.log('fetching: ', start ,end);
-    let arr = [];
-
-    return new Promise((resolve, reject) => {
-        console.log('creating new promise for page #: ', calculatePage(end));
-
-        setTimeout(() => {
-            console.log('fetched for: ', start, end);
-            const page = calculatePage(end);
-            const startIndex = page * PAGE_SIZE;
-            const endIndex = Math.min(startIndex + PAGE_SIZE, items.length);
-
-            for (var i = startIndex; i < endIndex; i++) {
-                items[i] = {
-                    id: i,
-                    title: 'item #' + i
-                }
-            }
-
-            resolve({ page, items });
-        }, 100);
-    });
-}
-
-
-function isItemEmpty(item) {
-    return !item.title;
-}
-
-
-let pageCache = {};
-function isInPageCache(page) {
-    if (!pageCache[page]) {
-        pageCache[page] = true;
+let loadedPages = {};
+function isPageLoaded(page) {
+    if (!loadedPages[page]) {
+        loadedPages[page] = true;
 
         return false;
     }
@@ -70,21 +34,44 @@ function isInPageCache(page) {
     return true;
 }
 
+function fetchData(start, end) {
+    return new Promise((resolve, reject) => {
+        if (!isFetchNeeded(start, end)) {
+            return reject('No new data needed');
+        }
+
+        const page = getPage(end);
+
+        if (isPageLoaded(page)) {
+            return reject(`Page ${page} already loaded.`);
+        }
+
+        setTimeout(() => {
+            const startIndex = page * PAGE_SIZE;
+            const endIndex = Math.min(startIndex + PAGE_SIZE, items.length);
+
+            for (let i = startIndex; i < endIndex; i++) {
+                items[i] = {
+                    id: i,
+                    title: 'item #' + i
+                };
+            }
+
+            resolve(items);
+        }, 100);
+    });
+}
+
+
 class InfiniteListExample extends React.Component {
     constructor(props) {
         this.state = {items: props.items};
     }
 
     onRangeChange(start, end) {
-        if (isFetchNeeded(start, end)) {
-            fetchData(start, end).then((params) => {
-                let { page, items } = params;
-
-                if (!isInPageCache(page)) {
-                    this.setState({ items });
-                }
-            });
-        }
+        fetchData(start, end)
+            .then((items) => this.setState({ items }))
+            .catch((message) => console.log(message));
     }
 
     render() {
