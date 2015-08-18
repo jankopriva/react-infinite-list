@@ -8,6 +8,16 @@ function isHighDensity() {
     return ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 }
 
+class EmptyListItem extends React.Component {
+    render() {
+        return (
+            <div key={this.props.id} className="infinite-list-item empty-item">
+                Loading...
+            </div>
+        );
+    }
+}
+
 class InfiniteListItem extends React.Component {
     render() {
         return (
@@ -31,7 +41,7 @@ export default class InfiniteList extends React.Component {
         super(props);
 
         this._scrollTimer = null;
-        this.state = { renderedStart: 0 };
+        this.state = { renderedStart: 0, items: props.items };
     }
 
     onWheel() {
@@ -83,7 +93,11 @@ export default class InfiniteList extends React.Component {
     }
 
     _getItemComponent(item) {
-        var ListItemComponent = this.props.listItemClass || InfiniteListItem;
+        let ListItemComponent = this.props.listItemClass;
+        if (this.props.isItemEmpty(item)) {
+            ListItemComponent = this.props.emptyListItemClass;
+        }
+
         return <ListItemComponent key={item.id} {...item} />;
     }
 
@@ -92,6 +106,28 @@ export default class InfiniteList extends React.Component {
             'infinite-list',
             this.props.className
         );
+    }
+
+    componentDidMount() {
+        this.state.isInitialRender = false;
+
+         var node = React.findDOMNode(this);
+         setTimeout(() => {
+            node.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
+         }, 0);
+    }
+
+    _notifyWhenDataIsNeeded(start, end) {
+        const items = this.state.items;
+
+        // Do not go over the end of the array
+        if (end >= items.length ) end = items.length - 1;
+
+        const isItemEmpty = this.props.isItemEmpty;
+
+        if (_.any(items.slice(start, end + 1), isItemEmpty)) {
+            this.props.onRangeChange(start, end);
+        }
     }
 
     render() {
@@ -103,6 +139,9 @@ export default class InfiniteList extends React.Component {
 
         var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
         var listItems = visibleItems.map(this._getItemComponent, this);
+
+        const dataRangeEnd = Math.min(renderedStart + listItems.length, this.state.items.length);
+        this.props.paging && this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
 
         var padding = this.state.renderedStart * itemHeight;
         // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
@@ -126,5 +165,14 @@ export default class InfiniteList extends React.Component {
 InfiniteList.propTypes = {
     items: React.PropTypes.array.isRequired,
     height: React.PropTypes.number.isRequired,
-    itemHeight: React.PropTypes.number.isRequired
+    itemHeight: React.PropTypes.number.isRequired,
+    isItemEmpty: React.PropTypes.func
+};
+
+InfiniteList.defaultProps = {
+    firstVisibleItemIndex: 0,
+    isItemEmpty: () => false,
+    paging: false,
+    listItemClass: InfiniteListItem,
+    emptyListItemClass: EmptyListItem
 };
