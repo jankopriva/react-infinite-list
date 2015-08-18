@@ -41,10 +41,6 @@ function getPage(index) {
     return parseInt(index / PAGE_SIZE, 10);
 }
 
-function isDataAlreadyLoaded(pages) {
-    return isPageLoaded(pages[0] && isPageLoaded(pages[1]));
-}
-
 function getPages(start, end) {
     const startIndexPage = getPage(start);
     const endIndexPage = getPage(end);
@@ -66,7 +62,7 @@ function getCount(page) {
 }
 
 function setItems(offset, count) {
-    for (i = offset; i < offset + count; i++) {
+    for (let i = offset; i < offset + count; i++) {
         items[i].title = 'item #' + i;
     }
 }
@@ -75,12 +71,13 @@ function fetchData(page) {
     const offset = getOffset(page);
     const count = getCount(page);
 
-    return new Promise((resolve, reject) => {
-        setTimeout(()=> {
+    return new Promise((resolve) => {
+        setTimeout(() => {
             const response = {
                 page: page,
                 items: setItems(offset, count)
-            }
+            };
+
             resolve(response);
         }, 100);
     });
@@ -92,16 +89,11 @@ class InfiniteListExample extends React.Component {
     }
 
     onRangeChange(start, end) {
-        let pages = getPages(start, end);
+        let pages = _.uniq(getPages(start, end));
 
-        pages = _.uniq(pages);
-        const requests = pages.map((page) => {
-            if (!isPageLoaded(page)) {
-                return fetchData(page)
-            }
-
-            return true;
-        }).filter((request) => request !== true);
+        const requests = pages
+            .filter((page) => !isPageLoaded(page))
+            .map((page) => fetchData(page));
 
         if (requests.length) {
             Promise.all(requests).then((responses) => {
