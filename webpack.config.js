@@ -4,7 +4,7 @@ var webpack = require('webpack');
 module.exports = function getWebpackConfig() {
     return {
         entry: {
-            app: ['./src/example/example']
+            app: ['./src/example/examples']
         },
 
         module: {

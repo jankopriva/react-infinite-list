@@ -19,7 +19,6 @@ class EmptyListItem extends React.Component {
     }
 }
 
-
 class InfiniteListItem extends React.Component {
     render() {
         return (
@@ -96,11 +95,9 @@ export default class InfiniteList extends React.Component {
     }
 
     _getItemComponent(item) {
-
-        let ListItemComponent = this.props.listItemClass || InfiniteListItem;
+        let ListItemComponent = this.props.listItemClass;
         if (this.props.isItemEmpty(item)) {
-            // TODO: migth pass empty item class in props
-            ListItemComponent = EmptyListItem;
+            ListItemComponent = this.props.emptyListItemClass;
         }
 
         return <ListItemComponent key={item.id} {...item} />;
@@ -123,11 +120,14 @@ export default class InfiniteList extends React.Component {
     }
 
     _notifyWhenDataIsNeeded(start, end) {
-        console.log('will notify for: ', start, end);
         const items = this.state.items;
+
+        // Do not go over the end of the array
+        if (end >= items.length ) end = items.length - 1;
+
         const isItemEmpty = this.props.isItemEmpty;
 
-        if (_.any(items.slice(start, end), isItemEmpty)) {
+        if (_.any(items.slice(start, end + 1), isItemEmpty)) {
             this.props.onRangeChange(start, end);
         }
     }
@@ -143,7 +143,7 @@ export default class InfiniteList extends React.Component {
         var listItems = visibleItems.map(this._getItemComponent, this);
 
         const dataRangeEnd = Math.min(renderedStart + listItems.length, this.state.items.length);
-        this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
+        this.props.paging && this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
 
         var padding = this.state.renderedStart * itemHeight;
         // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
@@ -171,7 +171,10 @@ InfiniteList.propTypes = {
     isItemEmpty: React.PropTypes.func
 };
 
-InfiniteList.getDefaultProps = {
+InfiniteList.defaultProps = {
     firstVisibleItemIndex: 0,
-    isItemEmpty: () => false
+    isItemEmpty: () => false,
+    paging: false,
+    listItemClass: InfiniteListItem,
+    emptyListItemClass: EmptyListItem
 };
