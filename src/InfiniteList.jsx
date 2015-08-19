@@ -41,7 +41,7 @@ export default class InfiniteList extends React.Component {
         super(props);
 
         this._scrollTimer = null;
-        this.state = { renderedStart: 0, items: props.items };
+        this.state = { renderedStart: 0 };
     }
 
     onWheel() {
@@ -118,7 +118,7 @@ export default class InfiniteList extends React.Component {
     }
 
     _notifyWhenDataIsNeeded(start, end) {
-        const items = this.state.items;
+        const items = this.props.items;
 
         // Do not go over the end of the array
         if (end >= items.length ) end = items.length - 1;
@@ -140,7 +140,7 @@ export default class InfiniteList extends React.Component {
         var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
         var listItems = visibleItems.map(this._getItemComponent, this);
 
-        const dataRangeEnd = Math.min(renderedStart + listItems.length, this.state.items.length);
+        const dataRangeEnd = Math.min(renderedStart + listItems.length, this.props.items.length);
         this.props.paging && this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
 
         var padding = this.state.renderedStart * itemHeight;
@@ -169,7 +169,8 @@ InfiniteList.propTypes = {
     isItemEmpty: React.PropTypes.func,
     listItemClass: React.PropTypes.func,
     emptyListItemClass: React.PropTypes.func,
-    firstVisibleItemIndex: React.PropTypes.number
+    firstVisibleItemIndex: React.PropTypes.number,
+    paging: React.PropTypes.bool
 
 };
 

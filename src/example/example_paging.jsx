@@ -59,10 +59,18 @@ function getCount(page) {
     return (lastPage === page && lastPageItemsCount) ? lastPageItemsCount : PAGE_SIZE;
 }
 
-function setItems(offset, count) {
-    for (let i = offset; i < offset + count; i++) {
-        items[i].title = 'item #' + i;
+function createItems(offset, count) {
+    let items = [];
+
+    for (let i = 0; i < count; i++) {
+        let number = offset + i;
+        items.push({
+            id: number,
+            title: 'item #' + number
+        });
     }
+
+    return items;
 }
 
 function fetchData(page) {
@@ -73,7 +81,7 @@ function fetchData(page) {
         setTimeout(() => {
             const response = {
                 page: page,
-                items: setItems(offset, count)
+                items: createItems(offset, count)
             };
             resolve(response);
         }, 100);
@@ -87,6 +95,12 @@ class EmptyListItem extends React.Component {
                 Loading...
             </div>
         );
+    }
+}
+
+function updateItems(newItems, start) {
+    for (let i = 0; i < newItems.length; i++) {
+        items[i + start] = newItems[i];
     }
 }
 
@@ -111,9 +125,12 @@ export default class InfiniteListExample extends React.Component {
             Promise.all(requests).then((responses) => {
                 responses.forEach((response) => {
                     cachePage(response.page);
+                    updateItems(response.items, response.page * PAGE_SIZE);
                 });
 
-                this.setState(items);
+                this.setState({
+                    items: items
+                });
             });
         }
     }
