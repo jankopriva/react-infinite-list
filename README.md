@@ -29,6 +29,18 @@ Usage
 
 `listItemClass` is optional. Rather, it serves for default list item view overriding.
 
+Infinite List supports paging as well. Just set `paging={true}` when using
+the component. When particular list item has no data instance of default
+`emptyListItemClass` will be rendered. You can pass your own class using
+`emptyListItemClass` property.
+
+By default, list item is empty when title property of item model is not defined.
+If you are using different rules, you need to define your own helper that can
+distinguish empty item from non-empty one. Pass the helper in `isItemEmpty` property.
+
+In `firstVisibleItemIndex`, you can specify which index rendering can start from.
+Default is 0.
+
 There are also some mandatory css rules:
 ```css
     .infinite-list {

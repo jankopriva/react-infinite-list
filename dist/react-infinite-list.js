@@ -78,16 +78,42 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return window.matchMedia && (window.matchMedia("only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)").matches || window.matchMedia("only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)").matches) || window.devicePixelRatio && window.devicePixelRatio > 1.3;
 	}
 
-	var InfiniteListItem = (function (_React$Component) {
-	    function InfiniteListItem() {
-	        _classCallCheck(this, InfiniteListItem);
+	var EmptyListItem = (function (_React$Component) {
+	    function EmptyListItem() {
+	        _classCallCheck(this, EmptyListItem);
 
 	        if (_React$Component != null) {
 	            _React$Component.apply(this, arguments);
 	        }
 	    }
 
-	    _inherits(InfiniteListItem, _React$Component);
+	    _inherits(EmptyListItem, _React$Component);
+
+	    _createClass(EmptyListItem, {
+	        render: {
+	            value: function render() {
+	                return React.createElement(
+	                    "div",
+	                    { key: this.props.id, className: "infinite-list-item empty-item" },
+	                    "Loading..."
+	                );
+	            }
+	        }
+	    });
+
+	    return EmptyListItem;
+	})(React.Component);
+
+	var InfiniteListItem = (function (_React$Component2) {
+	    function InfiniteListItem() {
+	        _classCallCheck(this, InfiniteListItem);
+
+	        if (_React$Component2 != null) {
+	            _React$Component2.apply(this, arguments);
+	        }
+	    }
+
+	    _inherits(InfiniteListItem, _React$Component2);
 
 	    _createClass(InfiniteListItem, {
 	        render: {
@@ -109,17 +135,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	    id: React.PropTypes.oneOfType([React.PropTypes.number, React.PropTypes.string]).isRequired
 	};
 
-	var InfiniteList = (function (_React$Component2) {
+	var InfiniteList = (function (_React$Component3) {
 	    function InfiniteList(props) {
 	        _classCallCheck(this, InfiniteList);
 
 	        _get(Object.getPrototypeOf(InfiniteList.prototype), "constructor", this).call(this, props);
 
 	        this._scrollTimer = null;
-	        this.state = { renderedStart: 0 };
+	        this.state = { renderedStart: 0, items: props.items };
 	    }
 
-	    _inherits(InfiniteList, _React$Component2);
+	    _inherits(InfiniteList, _React$Component3);
 
 	    _createClass(InfiniteList, {
 	        onWheel: {
@@ -176,13 +202,43 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        _getItemComponent: {
 	            value: function _getItemComponent(item) {
-	                var ListItemComponent = this.props.listItemClass || InfiniteListItem;
+	                var ListItemComponent = this.props.listItemClass;
+	                if (this.props.isItemEmpty(item)) {
+	                    ListItemComponent = this.props.emptyListItemClass;
+	                }
+
 	                return React.createElement(ListItemComponent, _extends({ key: item.id }, item));
 	            }
 	        },
 	        _getClassNames: {
 	            value: function _getClassNames() {
 	                return classnames("infinite-list", this.props.className);
+	            }
+	        },
+	        componentDidMount: {
+	            value: function componentDidMount() {
+	                var _this = this;
+
+	                this.state.isInitialRender = false;
+
+	                var node = React.findDOMNode(this);
+	                setTimeout(function () {
+	                    node.scrollTop = _this.props.firstVisibleItemIndex * _this.props.itemHeight;
+	                }, 0);
+	            }
+	        },
+	        _notifyWhenDataIsNeeded: {
+	            value: function _notifyWhenDataIsNeeded(start, end) {
+	                var items = this.state.items;
+
+	                // Do not go over the end of the array
+	                if (end >= items.length) end = items.length - 1;
+
+	                var isItemEmpty = this.props.isItemEmpty;
+
+	                if (_.any(items.slice(start, end + 1), isItemEmpty)) {
+	                    this.props.onRangeChange(start, end);
+	                }
 	            }
 	        },
 	        render: {
@@ -198,6 +254,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
 	                var listItems = visibleItems.map(this._getItemComponent, this);
+
+	                var dataRangeEnd = Math.min(renderedStart + listItems.length, this.state.items.length);
+	                this.props.paging && this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
 
 	                var padding = this.state.renderedStart * itemHeight;
 	                // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
@@ -228,7 +287,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	InfiniteList.propTypes = {
 	    items: React.PropTypes.array.isRequired,
 	    height: React.PropTypes.number.isRequired,
-	    itemHeight: React.PropTypes.number.isRequired
+	    itemHeight: React.PropTypes.number.isRequired,
+	    isItemEmpty: React.PropTypes.func,
+	    listItemClass: React.PropTypes.func,
+	    emptyListItemClass: React.PropTypes.func,
+	    firstVisibleItemIndex: React.PropTypes.number
+
+	};
+
+	InfiniteList.defaultProps = {
+	    firstVisibleItemIndex: 0,
+	    isItemEmpty: function () {
+	        return false;
+	    },
+	    paging: false,
+	    listItemClass: InfiniteListItem,
+	    emptyListItemClass: EmptyListItem
 	};
 
 /***/ },

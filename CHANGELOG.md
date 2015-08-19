@@ -1,3 +1,7 @@
+## v0.3.0 (2015-08-19)
+Paging support. See `src/example` for details. List view can also start rendering
+from specified index. Default is 0.
+
 ## v0.2.5 (2015-07-9)
 Fixed library build. Removed item from module to main file, due to the babel transpile issues.
 

@@ -166,7 +166,11 @@ InfiniteList.propTypes = {
     items: React.PropTypes.array.isRequired,
     height: React.PropTypes.number.isRequired,
     itemHeight: React.PropTypes.number.isRequired,
-    isItemEmpty: React.PropTypes.func
+    isItemEmpty: React.PropTypes.func,
+    listItemClass: React.PropTypes.func,
+    emptyListItemClass: React.PropTypes.func,
+    firstVisibleItemIndex: React.PropTypes.number
+
 };
 
 InfiniteList.defaultProps = {
