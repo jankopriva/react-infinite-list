@@ -3,7 +3,7 @@ import InfiniteList from '../InfiniteList';
 import _ from 'lodash';
 
 const PAGE_SIZE = 20;
-const TOTAL_COUNT = 10000;
+const TOTAL_COUNT = 10001;
 
 const items = _.times(TOTAL_COUNT, (id) => ({ id }));
 
@@ -52,7 +52,7 @@ function getOffset(page) {
 
 function getCount(page) {
     // Pages are counted from 0
-    const lastPage = parseInt(items.length / PAGE_SIZE, 10) - 1;
+    const lastPage = parseInt(items.length / PAGE_SIZE, 10);
     const lastPageItemsCount = items.length % PAGE_SIZE;
 
     // Determine whether last page item count is lesser than PAGE_SIZE
