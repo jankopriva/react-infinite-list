@@ -1,3 +1,6 @@
+## v0.3.1 (2015-08-21)
+Renamed empty list item class name and isEmpty helper to more descriptive names.
+
 ## v0.3.0 (2015-08-19)
 Paging support. See `src/example` for details. List view can also start rendering
 from specified index. Default is 0.

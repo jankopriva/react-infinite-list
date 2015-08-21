@@ -78,30 +78,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return window.matchMedia && (window.matchMedia("only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)").matches || window.matchMedia("only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)").matches) || window.devicePixelRatio && window.devicePixelRatio > 1.3;
 	}
 
-	var EmptyListItem = (function (_React$Component) {
-	    function EmptyListItem() {
-	        _classCallCheck(this, EmptyListItem);
+	var LoadingListItem = (function (_React$Component) {
+	    function LoadingListItem() {
+	        _classCallCheck(this, LoadingListItem);
 
 	        if (_React$Component != null) {
 	            _React$Component.apply(this, arguments);
 	        }
 	    }
 
-	    _inherits(EmptyListItem, _React$Component);
+	    _inherits(LoadingListItem, _React$Component);
 
-	    _createClass(EmptyListItem, {
+	    _createClass(LoadingListItem, {
 	        render: {
 	            value: function render() {
 	                return React.createElement(
 	                    "div",
-	                    { key: this.props.id, className: "infinite-list-item empty-item" },
+	                    { key: this.props.id, className: "infinite-list-item item-loading" },
 	                    "Loading..."
 	                );
 	            }
 	        }
 	    });
 
-	    return EmptyListItem;
+	    return LoadingListItem;
 	})(React.Component);
 
 	var InfiniteListItem = (function (_React$Component2) {
@@ -142,7 +142,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _get(Object.getPrototypeOf(InfiniteList.prototype), "constructor", this).call(this, props);
 
 	        this._scrollTimer = null;
-	        this.state = { renderedStart: 0, items: props.items };
+	        this.state = { renderedStart: 0 };
 	    }
 
 	    _inherits(InfiniteList, _React$Component3);
@@ -203,8 +203,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _getItemComponent: {
 	            value: function _getItemComponent(item) {
 	                var ListItemComponent = this.props.listItemClass;
-	                if (this.props.isItemEmpty(item)) {
-	                    ListItemComponent = this.props.emptyListItemClass;
+	                if (this.props.isItemLoading(item)) {
+	                    ListItemComponent = this.props.loadingListItemClass;
 	                }
 
 	                return React.createElement(ListItemComponent, _extends({ key: item.id }, item));
@@ -229,14 +229,14 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        _notifyWhenDataIsNeeded: {
 	            value: function _notifyWhenDataIsNeeded(start, end) {
-	                var items = this.state.items;
+	                var items = this.props.items;
 
 	                // Do not go over the end of the array
 	                if (end >= items.length) end = items.length - 1;
 
-	                var isItemEmpty = this.props.isItemEmpty;
+	                var isItemLoading = this.props.isItemLoading;
 
-	                if (_.any(items.slice(start, end + 1), isItemEmpty)) {
+	                if (_.any(items.slice(start, end + 1), isItemLoading)) {
 	                    this.props.onRangeChange(start, end);
 	                }
 	            }
@@ -255,7 +255,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
 	                var listItems = visibleItems.map(this._getItemComponent, this);
 
-	                var dataRangeEnd = Math.min(renderedStart + listItems.length, this.state.items.length);
+	                var dataRangeEnd = Math.min(renderedStart + listItems.length, this.props.items.length);
 	                this.props.paging && this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
 
 	                var padding = this.state.renderedStart * itemHeight;
@@ -288,21 +288,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    items: React.PropTypes.array.isRequired,
 	    height: React.PropTypes.number.isRequired,
 	    itemHeight: React.PropTypes.number.isRequired,
-	    isItemEmpty: React.PropTypes.func,
+	    isItemLoading: React.PropTypes.func,
 	    listItemClass: React.PropTypes.func,
-	    emptyListItemClass: React.PropTypes.func,
-	    firstVisibleItemIndex: React.PropTypes.number
+	    loadingListItemClass: React.PropTypes.func,
+	    firstVisibleItemIndex: React.PropTypes.number,
+	    paging: React.PropTypes.bool
 
 	};
 
 	InfiniteList.defaultProps = {
 	    firstVisibleItemIndex: 0,
-	    isItemEmpty: function () {
+	    isItemLoading: function () {
 	        return false;
 	    },
 	    paging: false,
 	    listItemClass: InfiniteListItem,
-	    emptyListItemClass: EmptyListItem
+	    lodingListItemClass: LoadingListItem
 	};
 
 /***/ },
