@@ -8,10 +8,10 @@ function isHighDensity() {
     return ((window.matchMedia && (window.matchMedia('only screen and (min-resolution: 124dpi), only screen and (min-resolution: 1.3dppx), only screen and (min-resolution: 48.8dpcm)').matches || window.matchMedia('only screen and (-webkit-min-device-pixel-ratio: 1.3), only screen and (-o-min-device-pixel-ratio: 2.6/2), only screen and (min--moz-device-pixel-ratio: 1.3), only screen and (min-device-pixel-ratio: 1.3)').matches)) || (window.devicePixelRatio && window.devicePixelRatio > 1.3));
 }
 
-class EmptyListItem extends React.Component {
+class LoadingListItem extends React.Component {
     render() {
         return (
-            <div key={this.props.id} className="infinite-list-item empty-item">
+            <div key={this.props.id} className="infinite-list-item item-loading">
                 Loading...
             </div>
         );
@@ -94,8 +94,8 @@ export default class InfiniteList extends React.Component {
 
     _getItemComponent(item) {
         let ListItemComponent = this.props.listItemClass;
-        if (this.props.isItemEmpty(item)) {
-            ListItemComponent = this.props.emptyListItemClass;
+        if (this.props.isItemLoading(item)) {
+            ListItemComponent = this.props.loadingListItemClass;
         }
 
         return <ListItemComponent key={item.id} {...item} />;
@@ -123,9 +123,9 @@ export default class InfiniteList extends React.Component {
         // Do not go over the end of the array
         if (end >= items.length ) end = items.length - 1;
 
-        const isItemEmpty = this.props.isItemEmpty;
+        const isItemLoading = this.props.isItemLoading;
 
-        if (_.any(items.slice(start, end + 1), isItemEmpty)) {
+        if (_.any(items.slice(start, end + 1), isItemLoading)) {
             this.props.onRangeChange(start, end);
         }
     }
@@ -166,9 +166,9 @@ InfiniteList.propTypes = {
     items: React.PropTypes.array.isRequired,
     height: React.PropTypes.number.isRequired,
     itemHeight: React.PropTypes.number.isRequired,
-    isItemEmpty: React.PropTypes.func,
+    isItemLoading: React.PropTypes.func,
     listItemClass: React.PropTypes.func,
-    emptyListItemClass: React.PropTypes.func,
+    loadingListItemClass: React.PropTypes.func,
     firstVisibleItemIndex: React.PropTypes.number,
     paging: React.PropTypes.bool
 
@@ -176,8 +176,8 @@ InfiniteList.propTypes = {
 
 InfiniteList.defaultProps = {
     firstVisibleItemIndex: 0,
-    isItemEmpty: () => false,
+    isItemLoading: () => false,
     paging: false,
     listItemClass: InfiniteListItem,
-    emptyListItemClass: EmptyListItem
+    lodingListItemClass: LoadingListItem
 };

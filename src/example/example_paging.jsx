@@ -11,10 +11,10 @@ _.take(items, PAGE_SIZE).forEach((item, index) => {
     item.title = `item #${index}`;
 });
 
-const isItemEmpty = (item) => _.isEmpty(item.title);
+const isItemLoading = (item) => _.isEmpty(item.title);
 
 function isFetchNeeded(start, end) {
-   return _.any(items.slice(start, end), isItemEmpty);
+   return _.any(items.slice(start, end), isItemLoading);
 }
 
 // Page cache. We got first page loaded.
@@ -88,10 +88,10 @@ function fetchData(page) {
     });
 }
 
-class EmptyListItem extends React.Component {
+class LoadingListItem extends React.Component {
     render() {
         return (
-            <div key={this.props.id} className="infinite-list-item empty-item">
+            <div key={this.props.id} className="infinite-list-item item-loading">
                 Loading...
             </div>
         );
@@ -143,8 +143,8 @@ export default class InfiniteListExample extends React.Component {
             itemHeight={20}
             onRangeChange={this.onRangeChange.bind(this)}
             paging={true}
-            isItemEmpty={isItemEmpty}
-            emptyListItemClass={EmptyListItem}
+            isItemLoading={isItemLoading}
+            loadingListItemClass={LoadingListItem}
         />;
     }
 }
