@@ -10,7 +10,7 @@ React.render(
         <h3> Infinite List Example </h3>
         <div className='example'>
             <InfiniteListExample />
-       </div>
+        </div>
         <h3> Infinite List With Paging Example </h3>
         <div className='example'>
             <InfiniteListPagingExample />

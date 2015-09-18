@@ -82,23 +82,21 @@ export default class InfiniteList extends React.Component {
         var itemsChanged  = this.props.items.length !== nextProps.items.length,
             heightChanged = this.props.height !== nextProps.height;
 
-        // scroll to the top when searching
-        if (itemsChanged) {
-            React.findDOMNode(this).scrollTop = 0;
-        }
-
         if (itemsChanged || heightChanged) {
             this._calculateVisibleItems();
         }
     }
 
-    _getItemComponent(item) {
+    _getItemComponent(item, i) {
         let ListItemComponent = this.props.listItemClass;
+
         if (this.props.isItemLoading(item)) {
             ListItemComponent = this.props.loadingListItemClass;
         }
 
-        return <ListItemComponent key={item.id} {...item} />;
+        let key = item ? item.id : i;
+
+        return <ListItemComponent key={key} {...item} />;
     }
 
     _getClassNames() {
@@ -111,42 +109,59 @@ export default class InfiniteList extends React.Component {
     componentDidMount() {
         this.state.isInitialRender = false;
 
-         var node = React.findDOMNode(this);
-         setTimeout(() => {
-            node.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
-         }, 0);
+        var node = React.findDOMNode(this);
+        setTimeout(() => {
+           node.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
+        }, 0);
     }
 
-    _notifyWhenDataIsNeeded(start, end) {
-        const items = this.props.items;
+    _getVisibleSlice(items, start, end) {
+        let result = [];
 
-        // Do not go over the end of the array
-        if (end >= items.length ) end = items.length - 1;
-
-        const isItemLoading = this.props.isItemLoading;
-
-        if (_.any(items.slice(start, end + 1), isItemLoading)) {
-            this.props.onRangeChange(start, end);
+        for (let i = start; i < end; i++) {
+            result.push(items[i]);
         }
+
+        return result;
+    }
+
+    _prepareVisibleItems(itemsPerPage) {
+        let visibleStart = this.state.renderedStart,
+            visibleEnd = Math.min(this.props.itemsCount, visibleStart + itemsPerPage);
+
+        let visibleItems = this._getVisibleSlice(this.props.items, visibleStart, visibleEnd);
+
+        if (this.props.paging && _.any(visibleItems, this.props.isItemLoading)) {
+            this.props.onRangeChange(visibleStart, visibleEnd);
+        }
+
+        return visibleItems;
+    }
+
+    _getContentStyle(itemsPerPage) {
+        var { itemHeight } = this.props;
+
+        // the number one guarantees there is never empty space at the end of the list
+        var totalHeight = this.props.itemsCount * itemHeight,
+            pageHeight = itemsPerPage * itemHeight;
+
+        // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
+        var maxPadding = Math.max(0, totalHeight - pageHeight + itemHeight),
+            padding = this.state.renderedStart * this.props.itemHeight,
+            paddingTop = Math.min(maxPadding, padding);
+
+        return {
+            height: totalHeight - paddingTop,
+            paddingTop: paddingTop
+        };
     }
 
     render() {
-        var { renderedStart } = this.state,
-            { items, height, itemHeight } = this.props,
-            // the number one guarantees there is never empty space at the end of the list
-            numOfVisibleItems = Math.ceil(height / itemHeight) + 1,
-            totalHeight = items.length * itemHeight;
+        let itemsPerPage = Math.ceil(this.props.height / this.props.itemHeight) + 1;
 
-        var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
-        var listItems = visibleItems.map(this._getItemComponent, this);
-
-        const dataRangeEnd = Math.min(renderedStart + listItems.length, this.props.items.length);
-        this.props.paging && this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
-
-        var padding = this.state.renderedStart * itemHeight;
-        // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
-        var maxPadding = Math.max(0, totalHeight - (numOfVisibleItems * itemHeight) + itemHeight);
-        var paddingTop = Math.min(maxPadding, padding);
+        let visibleItems = this._prepareVisibleItems(itemsPerPage);
+        let itemComponents = visibleItems.map(this._getItemComponent, this);
+        let contentStyle = this._getContentStyle(itemsPerPage);
 
         return (
             <div className={this._getClassNames()}
@@ -154,8 +169,8 @@ export default class InfiniteList extends React.Component {
                  onScroll={this.onScroll.bind(this)}
                  style={{height: this.props.height}}>
 
-                <div className="infinite-list-content" style={{height: totalHeight - paddingTop, paddingTop: paddingTop}}>
-                    {listItems}
+                <div className="infinite-list-content" style={contentStyle}>
+                    {itemComponents}
                 </div>
             </div>
         );
@@ -170,7 +185,8 @@ InfiniteList.propTypes = {
     listItemClass: React.PropTypes.func,
     loadingListItemClass: React.PropTypes.func,
     firstVisibleItemIndex: React.PropTypes.number,
-    paging: React.PropTypes.bool
+    paging: React.PropTypes.bool,
+    itemsCount: React.PropTypes.number.isRequired
 
 };
 
