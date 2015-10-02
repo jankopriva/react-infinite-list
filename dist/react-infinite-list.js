@@ -11,41 +11,41 @@
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
-/******/
+
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
-/******/
+
 /******/ 		// Check if module is in cache
 /******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/
+
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			exports: {},
 /******/ 			id: moduleId,
 /******/ 			loaded: false
 /******/ 		};
-/******/
+
 /******/ 		// Execute the module function
 /******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
+
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
-/******/
+
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
-/******/
+
+
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
-/******/
+
 /******/ 	// expose the module cache
 /******/ 	__webpack_require__.c = installedModules;
-/******/
+
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "";
-/******/
+
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
 /******/ })
@@ -190,24 +190,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var itemsChanged = this.props.items.length !== nextProps.items.length,
 	                    heightChanged = this.props.height !== nextProps.height;
 
-	                // scroll to the top when searching
-	                if (itemsChanged) {
-	                    React.findDOMNode(this).scrollTop = 0;
-	                }
-
 	                if (itemsChanged || heightChanged) {
 	                    this._calculateVisibleItems();
 	                }
 	            }
 	        },
 	        _getItemComponent: {
-	            value: function _getItemComponent(item) {
+	            value: function _getItemComponent(item, i) {
 	                var ListItemComponent = this.props.listItemClass;
+
 	                if (this.props.isItemLoading(item)) {
 	                    ListItemComponent = this.props.loadingListItemClass;
 	                }
 
-	                return React.createElement(ListItemComponent, _extends({ key: item.id }, item));
+	                var key = item ? item.id : i;
+
+	                return React.createElement(ListItemComponent, _extends({ key: key }, item));
 	            }
 	        },
 	        _getClassNames: {
@@ -227,41 +225,57 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }, 0);
 	            }
 	        },
-	        _notifyWhenDataIsNeeded: {
-	            value: function _notifyWhenDataIsNeeded(start, end) {
-	                var items = this.props.items;
+	        _getVisibleSlice: {
+	            value: function _getVisibleSlice(items, start, end) {
+	                var result = [];
 
-	                // Do not go over the end of the array
-	                if (end >= items.length) end = items.length - 1;
-
-	                var isItemLoading = this.props.isItemLoading;
-
-	                if (_.any(items.slice(start, end + 1), isItemLoading)) {
-	                    this.props.onRangeChange(start, end);
+	                for (var i = start; i < end; i++) {
+	                    result.push(items[i]);
 	                }
+
+	                return result;
+	            }
+	        },
+	        _prepareVisibleItems: {
+	            value: function _prepareVisibleItems(itemsPerPage) {
+	                var visibleStart = this.state.renderedStart,
+	                    visibleEnd = Math.min(this.props.itemsCount, visibleStart + itemsPerPage);
+
+	                var visibleItems = this._getVisibleSlice(this.props.items, visibleStart, visibleEnd);
+
+	                if (this.props.paging && _.any(visibleItems, this.props.isItemLoading)) {
+	                    this.props.onRangeChange(visibleStart, visibleEnd);
+	                }
+
+	                return visibleItems;
+	            }
+	        },
+	        _getContentStyle: {
+	            value: function _getContentStyle(itemsPerPage) {
+	                var itemHeight = this.props.itemHeight;
+
+	                // the number one guarantees there is never empty space at the end of the list
+	                var totalHeight = this.props.itemsCount * itemHeight,
+	                    pageHeight = itemsPerPage * itemHeight;
+
+	                // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
+	                var maxPadding = Math.max(0, totalHeight - pageHeight + itemHeight),
+	                    padding = this.state.renderedStart * this.props.itemHeight,
+	                    paddingTop = Math.min(maxPadding, padding);
+
+	                return {
+	                    height: totalHeight - paddingTop,
+	                    paddingTop: paddingTop
+	                };
 	            }
 	        },
 	        render: {
 	            value: function render() {
-	                var renderedStart = this.state.renderedStart;var _props = this.props;
-	                var items = _props.items;
-	                var height = _props.height;
+	                var itemsPerPage = Math.ceil(this.props.height / this.props.itemHeight) + 1;
 
-	                var itemHeight = _props.itemHeight;
-	                // the number one guarantees there is never empty space at the end of the list
-	                var numOfVisibleItems = Math.ceil(height / itemHeight) + 1;
-	                var totalHeight = items.length * itemHeight;
-
-	                var visibleItems = items.slice(renderedStart, renderedStart + numOfVisibleItems);
-	                var listItems = visibleItems.map(this._getItemComponent, this);
-
-	                var dataRangeEnd = Math.min(renderedStart + listItems.length, this.props.items.length);
-	                this.props.paging && this._notifyWhenDataIsNeeded(renderedStart, dataRangeEnd);
-
-	                var padding = this.state.renderedStart * itemHeight;
-	                // if maximum number of items on page is larger than actual number of items, maxPadding can be < 0
-	                var maxPadding = Math.max(0, totalHeight - numOfVisibleItems * itemHeight + itemHeight);
-	                var paddingTop = Math.min(maxPadding, padding);
+	                var visibleItems = this._prepareVisibleItems(itemsPerPage);
+	                var itemComponents = visibleItems.map(this._getItemComponent, this);
+	                var contentStyle = this._getContentStyle(itemsPerPage);
 
 	                return React.createElement(
 	                    "div",
@@ -271,8 +285,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	                        style: { height: this.props.height } },
 	                    React.createElement(
 	                        "div",
-	                        { className: "infinite-list-content", style: { height: totalHeight - paddingTop, paddingTop: paddingTop } },
-	                        listItems
+	                        { className: "infinite-list-content", style: contentStyle },
+	                        itemComponents
 	                    )
 	                );
 	            }
@@ -292,7 +306,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    listItemClass: React.PropTypes.func,
 	    loadingListItemClass: React.PropTypes.func,
 	    firstVisibleItemIndex: React.PropTypes.number,
-	    paging: React.PropTypes.bool
+	    paging: React.PropTypes.bool,
+	    itemsCount: React.PropTypes.number.isRequired
 
 	};
 
@@ -308,7 +323,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
 
@@ -370,3 +385,4 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ }
 /******/ ])
 });
+;

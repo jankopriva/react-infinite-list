@@ -5,13 +5,12 @@ import _ from 'lodash';
 const PAGE_SIZE = 20;
 const TOTAL_COUNT = 10001;
 
-const items = _.times(TOTAL_COUNT, (id) => ({ id }));
+const items = _.times(PAGE_SIZE, (i) => ({
+    id: i,
+    title: `item #${i}`
+}));
 
-_.take(items, PAGE_SIZE).forEach((item, index) => {
-    item.title = `item #${index}`;
-});
-
-const isItemLoading = (item) => _.isEmpty(item.title);
+const isItemLoading = (item) => !item;
 
 function isFetchNeeded(start, end) {
    return _.any(items.slice(start, end), isItemLoading);
@@ -139,6 +138,7 @@ export default class InfiniteListExample extends React.Component {
         return <InfiniteList
             className="custom-list-class"
             items={this.state.items}
+            itemsCount={TOTAL_COUNT}
             height={150}
             itemHeight={20}
             onRangeChange={this.onRangeChange.bind(this)}

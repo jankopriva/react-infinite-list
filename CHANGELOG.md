@@ -1,3 +1,8 @@
+## v0.4.0 (2015-10-02)
+Added support for sparse items array. This makes it possible to use react-infinite-list
+with large collections of items. Backwards incompatible, itemsCount is now a required
+parameter!
+
 ## v0.3.1 (2015-08-21)
 Renamed empty list item class name and isEmpty helper to more descriptive names.
 
