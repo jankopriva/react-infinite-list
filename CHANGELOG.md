@@ -1,3 +1,7 @@
+## v0.4.1 (2015-10-02)
+This changes entry point to the library to be the non-minified version. It also updates
+the minified dist version to the correct one.
+
 ## v0.4.0 (2015-10-02)
 Added support for sparse items array. This makes it possible to use react-infinite-list
 with large collections of items. Backwards incompatible, itemsCount is now a required
