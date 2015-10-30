@@ -1,3 +1,6 @@
+## v0.4.2 (2015-10-30)
+Require React 0.14 instead of 0.13
+
 ## v0.4.1 (2015-10-02)
 This changes entry point to the library to be the non-minified version. It also updates
 the minified dist version to the correct one.
