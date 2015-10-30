@@ -1,3 +1,6 @@
+## v0.4.3 (2015-10-30)
+Getting rid of warnings in React 0.14
+
 ## v0.4.2 (2015-10-30)
 Require React 0.14 instead of 0.13
 

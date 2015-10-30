@@ -1,11 +1,11 @@
-import React from 'react';
+import ReactDOM from 'react-dom';
 
 import InfiniteListExample from './simple_example';
 import InfiniteListPagingExample from './example_paging';
 
 import './styles/app.scss';
 
-React.render(
+ReactDOM.render(
     <div className='examples'>
         <h3> Infinite List Example </h3>
         <div className='example'>

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
 import classnames from 'classnames';
 
@@ -69,7 +70,7 @@ export default class InfiniteList extends React.Component {
     }
 
     _calculateVisibleItems() {
-        var scrolledPx = React.findDOMNode(this).scrollTop;
+        var scrolledPx = ReactDOM.findDOMNode(this).scrollTop;
 
         var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
@@ -109,7 +110,7 @@ export default class InfiniteList extends React.Component {
     componentDidMount() {
         this.state.isInitialRender = false;
 
-        var node = React.findDOMNode(this);
+        var node = ReactDOM.findDOMNode(this);
         setTimeout(() => {
            node.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
         }, 0);
