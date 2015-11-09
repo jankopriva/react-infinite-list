@@ -178,7 +178,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        _calculateVisibleItems: {
 	            value: function _calculateVisibleItems() {
-	                var scrolledPx = ReactDOM.findDOMNode(this).scrollTop;
+	                var scrolledPx = this.refs.infiniteList.scrollTop;
 
 	                var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
@@ -221,9 +221,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                this.state.isInitialRender = false;
 
-	                var node = ReactDOM.findDOMNode(this);
 	                setTimeout(function () {
-	                    node.scrollTop = _this.props.firstVisibleItemIndex * _this.props.itemHeight;
+	                    _this.refs.infiniteList.scrollTop = _this.props.firstVisibleItemIndex * _this.props.itemHeight;
 	                }, 0);
 	            }
 	        },
@@ -281,7 +280,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                return React.createElement(
 	                    "div",
-	                    { className: this._getClassNames(),
+	                    {
+	                        ref: "infiniteList",
+	                        className: this._getClassNames(),
 	                        onWheel: this.onWheel.bind(this),
 	                        onScroll: this.onScroll.bind(this),
 	                        style: { height: this.props.height } },
@@ -4856,11 +4857,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var fakeNode = document.createElement('react');
 	    ReactErrorUtils.invokeGuardedCallback = function (name, func, a, b) {
 	      var boundFunc = func.bind(null, a, b);
-	      fakeNode.addEventListener(name, boundFunc, false);
+	      var evtType = 'react-' + name;
+	      fakeNode.addEventListener(evtType, boundFunc, false);
 	      var evt = document.createEvent('Event');
-	      evt.initEvent(name, false, false);
+	      evt.initEvent(evtType, false, false);
 	      fakeNode.dispatchEvent(evt);
-	      fakeNode.removeEventListener(name, boundFunc, false);
+	      fakeNode.removeEventListener(evtType, boundFunc, false);
 	    };
 	  }
 	}
@@ -5400,7 +5402,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var canDefineProperty = false;
 	if (false) {
 	  try {
-	    Object.defineProperty({}, 'x', {});
+	    Object.defineProperty({}, 'x', { get: function () {} });
 	    canDefineProperty = true;
 	  } catch (x) {
 	    // IE will fail on defineProperty
@@ -10525,6 +10527,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    icon: null,
 	    id: MUST_USE_PROPERTY,
 	    inputMode: MUST_USE_ATTRIBUTE,
+	    integrity: null,
 	    is: MUST_USE_ATTRIBUTE,
 	    keyParams: MUST_USE_ATTRIBUTE,
 	    keyType: MUST_USE_ATTRIBUTE,
@@ -10882,6 +10885,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	// For quickly matching children type, to test if can be treated as content.
 	var CONTENT_TYPES = { 'string': true, 'number': true };
 
+	var CHILDREN = keyOf({ children: null });
 	var STYLE = keyOf({ style: null });
 	var HTML = keyOf({ __html: null });
 
@@ -11372,7 +11376,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 	        var markup = null;
 	        if (this._tag != null && isCustomComponent(this._tag, props)) {
-	          markup = DOMPropertyOperations.createMarkupForCustomAttribute(propKey, propValue);
+	          if (propKey !== CHILDREN) {
+	            markup = DOMPropertyOperations.createMarkupForCustomAttribute(propKey, propValue);
+	          }
 	        } else {
 	          markup = DOMPropertyOperations.createMarkupForProperty(propKey, propValue);
 	        }
@@ -11631,6 +11637,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      } else if (isCustomComponent(this._tag, nextProps)) {
 	        if (!node) {
 	          node = ReactMount.getNode(this._rootNodeID);
+	        }
+	        if (propKey === CHILDREN) {
+	          nextProp = null;
 	        }
 	        DOMPropertyOperations.setValueForAttribute(node, propKey, nextProp);
 	      } else if (DOMProperty.properties[propKey] || DOMProperty.isCustomAttribute(propKey)) {
@@ -18228,7 +18237,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	module.exports = '0.14.1';
+	module.exports = '0.14.2';
 
 /***/ },
 /* 142 */

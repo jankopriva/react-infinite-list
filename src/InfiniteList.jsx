@@ -70,7 +70,7 @@ export default class InfiniteList extends React.Component {
     }
 
     _calculateVisibleItems() {
-        var scrolledPx = ReactDOM.findDOMNode(this).scrollTop;
+        var scrolledPx = this.refs.infiniteList.scrollTop;
 
         var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
@@ -110,9 +110,8 @@ export default class InfiniteList extends React.Component {
     componentDidMount() {
         this.state.isInitialRender = false;
 
-        var node = ReactDOM.findDOMNode(this);
         setTimeout(() => {
-           node.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
+           this.refs.infiniteList.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
         }, 0);
     }
 
@@ -165,7 +164,9 @@ export default class InfiniteList extends React.Component {
         let contentStyle = this._getContentStyle(itemsPerPage);
 
         return (
-            <div className={this._getClassNames()}
+            <div
+                 ref="infiniteList"
+                 className={this._getClassNames()}
                  onWheel={this.onWheel.bind(this)}
                  onScroll={this.onScroll.bind(this)}
                  style={{height: this.props.height}}>
