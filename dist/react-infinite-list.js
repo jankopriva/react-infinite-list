@@ -222,7 +222,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	                this.state.isInitialRender = false;
 
 	                setTimeout(function () {
-	                    _this.refs.infiniteList.scrollTop = _this.props.firstVisibleItemIndex * _this.props.itemHeight;
+	                    if (_this.refs.infiniteList) {
+	                        _this.refs.infiniteList.scrollTop = _this.props.firstVisibleItemIndex * _this.props.itemHeight;
+	                    }
 	                }, 0);
 	            }
 	        },

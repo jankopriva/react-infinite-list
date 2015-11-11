@@ -1,3 +1,9 @@
+## v0.4.5 (2015-11-11)
+Check ref existence before touching it in setTimeouts
+
+## v0.4.4 (2015-11-09)
+Use refs in favor of findDOMNode
+
 ## v0.4.3 (2015-10-30)
 Getting rid of warnings in React 0.14
 
