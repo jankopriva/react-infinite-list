@@ -1,6 +1,6 @@
 {
   "name": "react-infinite-list",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "",
   "main": "lib/react-infinite-list.js",
   "scripts": {

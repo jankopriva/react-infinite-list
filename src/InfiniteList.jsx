@@ -111,7 +111,9 @@ export default class InfiniteList extends React.Component {
         this.state.isInitialRender = false;
 
         setTimeout(() => {
-           this.refs.infiniteList.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
+            if (this.refs.infiniteList) {
+                this.refs.infiniteList.scrollTop = this.props.firstVisibleItemIndex * this.props.itemHeight;
+            }
         }, 0);
     }
 
