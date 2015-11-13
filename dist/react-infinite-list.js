@@ -178,7 +178,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        },
 	        _calculateVisibleItems: {
 	            value: function _calculateVisibleItems() {
-	                var scrolledPx = this.refs.infiniteList.scrollTop;
+	                var scrolledPx = Math.max(0, this.refs.infiniteList.scrollTop);
 
 	                var visibleStart = Math.floor(scrolledPx / this.props.itemHeight);
 
