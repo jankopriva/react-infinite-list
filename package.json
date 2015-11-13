@@ -48,15 +48,16 @@
     "lodash": "3.0.1",
     "mocha": "^2.1.0",
     "nib": "1.0.4",
+    "node-sass": "3.4.2",
     "num2fraction": "1.0.1",
     "postcss": "4.0.3",
     "react-hot-loader": "1.1.4",
-    "sass-loader": "^0.4.1",
+    "sass-loader": "3.1.1",
     "sinon": "^1.13.0",
     "sinon-chai": "^2.7.0",
     "style-loader": "0.8.3",
     "url-loader": "0.5.5",
-    "webpack": "1.10.1",
+    "webpack": "1.12.4",
     "webpack-dev-server": "1.7.0"
   },
   "dependencies": {
