@@ -13,7 +13,7 @@ const items = _.times(PAGE_SIZE, (i) => ({
 const isItemLoading = (item) => !item;
 
 function isFetchNeeded(start, end) {
-   return _.any(items.slice(start, end), isItemLoading);
+   return _.some(items.slice(start, end), isItemLoading);
 }
 
 // Page cache. We got first page loaded.
