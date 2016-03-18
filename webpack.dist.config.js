@@ -56,14 +56,20 @@ var buildConfig = _.assign(getWebpackConfig(), {
         libraryTarget: 'umd'
     },
 
-    externals: {
-        react: {
-            root: "React",
-            commonjs: "react",
-            commonjs2: "react",
-            amd: "react"
+    externals: [{
+        'react-dom': {
+            root: 'ReactDOM',
+            commonjs: 'react-dom',
+            commonjs2: 'react-dom',
+            amd: 'react-dom'
+        },
+        'react': {
+            root: 'React',
+            commonjs: 'react',
+            commonjs2: 'react',
+            amd: 'react'
         }
-    }
+    }]
 });
 
 buildConfig.plugins = buildConfig.plugins.concat(plugins);
